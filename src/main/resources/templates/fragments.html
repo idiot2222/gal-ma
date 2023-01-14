@@ -1,4 +1,5 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:fragment="head">
     <meta charset="UTF-8">
@@ -7,10 +8,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link href="/css/style.css" rel="stylesheet">
     <title>갈매기 마당</title>
 </head>
 
-<nav th:fragment="navbar" class="navbar navbar-expand-lg bg-body-tertiary pt-0">
+<nav th:fragment="navbar" class="navbar navbar-expand-lg bg-body-tertiary py-0">
     <div class="container-fluid bg-primary-subtle">
         <a class="navbar-brand" href="#">Navbar</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,9 +42,15 @@
                 </li>
             </ul>
             <div class="me-1">
-                <a href="/login">
+                <a sec:authorize="!isAuthenticated()" href="/login">
                     <button type="button" class="btn btn-outline-primary">로그인</button>
                 </a>
+                <form sec:authorize="isAuthenticated()"
+                      th:action="@{/logout}" method="post"
+                      class="my-auto"
+                >
+                    <button type="submit" class="btn btn-outline-danger">로그아웃</button>
+                </form>
             </div>
             <form class="d-flex my-2" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

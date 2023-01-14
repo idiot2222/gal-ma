@@ -1,0 +1,16 @@
+.bg {
+    margin: auto;
+    width: 80%;
+    height: 100%;
+}
+
+.center-align {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.right {
+    float: right;
+}
