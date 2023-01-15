@@ -19,10 +19,10 @@ public class Account {
     @Column(length = 20, unique = true)
     private String username;
 
-    @Column(length = 20)
+    @Column(length = 30)
     private String password;
 
-    @Column(length = 30, unique = true)
+    @Column(length = 50, unique = true)
     private String email;
 
     private LocalDateTime joinedAt;
