@@ -8,7 +8,7 @@ public class AccountController {
 
     @GetMapping("/sign-up")
     public String getSignUp() {
-        return "account/signup";
+        return "account/sign-up";
     }
 
     @GetMapping("/login")
