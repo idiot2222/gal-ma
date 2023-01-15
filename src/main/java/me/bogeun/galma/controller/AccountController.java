@@ -1,19 +1,49 @@
 package me.bogeun.galma.controller;
 
+import lombok.RequiredArgsConstructor;
+import me.bogeun.galma.dto.SignUpDto;
+import me.bogeun.galma.service.AccountService;
+import me.bogeun.galma.validator.SignUpValidator;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
+
+@RequiredArgsConstructor
 @Controller
 public class AccountController {
 
-    @GetMapping("/sign-up")
-    public String getSignUp() {
-        return "account/sign-up";
-    }
+    private final AccountService accountService;
+
+    private final SignUpValidator signUpValidator;
+
 
     @GetMapping("/login")
     public String getLogin() {
         return "account/login";
+    }
+
+    @GetMapping("/sign-up")
+    public String getSignUp(Model model) {
+        model.addAttribute(new SignUpDto());
+
+        return "account/sign-up";
+    }
+
+    @PostMapping("/sign-up")
+    public String postSignUp(@Valid @ModelAttribute SignUpDto signUpDto, Errors errors) {
+        signUpValidator.validate(signUpDto, errors);
+        if(errors.hasErrors()) {
+            return "account/sign-up";
+        }
+
+        accountService.signUp(signUpDto);
+
+        return "redirect:/login";
     }
 
 }
