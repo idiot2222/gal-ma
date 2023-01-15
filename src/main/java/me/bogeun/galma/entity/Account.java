@@ -19,7 +19,7 @@ public class Account {
     @Column(length = 20, unique = true)
     private String username;
 
-    @Column(length = 30)
+    @Column(length = 68)
     private String password;
 
     @Column(length = 50, unique = true)
@@ -33,4 +33,14 @@ public class Account {
     @Column(length = 100)
     private String description;
 
+
+    @Builder
+    public Account(String username, String password, String email, LocalDateTime joinedAt, String image, String description) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.joinedAt = joinedAt;
+        this.image = image;
+        this.description = description;
+    }
 }
