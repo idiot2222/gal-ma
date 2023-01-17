@@ -1,0 +1,12 @@
+server:
+  port: 8000
+
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp:localhost/~/gal-ma
+    username: sa
+    password: 1
+  jpa:
+    hibernate:
+      ddl-auto: create
