@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -97,6 +98,7 @@ class AccountControllerTest {
                         .param("username", "wrong_username")
                         .param("password", "password123"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/login?error"));
+                .andExpect(redirectedUrl("/login?error"))
+                .andExpect(unauthenticated());
     }
 }
