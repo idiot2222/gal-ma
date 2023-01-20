@@ -2,13 +2,16 @@ package me.bogeun.galma.controller;
 
 import lombok.RequiredArgsConstructor;
 import me.bogeun.galma.dto.SignUpDto;
+import me.bogeun.galma.entity.Account;
 import me.bogeun.galma.service.AccountService;
+import me.bogeun.galma.utils.CurrentUser;
 import me.bogeun.galma.validator.SignUpValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
@@ -44,6 +47,17 @@ public class AccountController {
         accountService.signUp(signUpDto);
 
         return "redirect:/login";
+    }
+
+    @GetMapping("/profile/{username}")
+    public String getProfile(@PathVariable String username, Model model,
+                             @CurrentUser Account currentAccount) {
+        Account account = accountService.getAccountByUsername(username);
+
+        model.addAttribute(account);
+        model.addAttribute("isOwner", currentAccount.equals(account));
+
+        return "account/profile";
     }
 
 }

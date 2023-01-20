@@ -10,9 +10,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class AccountService implements UserDetailsService {
@@ -32,6 +34,12 @@ public class AccountService implements UserDetailsService {
         return accountRepository.save(account);
     }
 
+    @Transactional(readOnly = true)
+    public Account getAccountByUsername(String username) {
+        return accountRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("invalid username."));
+    }
+
+    @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account account = accountRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Invalid username."));

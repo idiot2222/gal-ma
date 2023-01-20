@@ -1,0 +1,83 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+<div class="container">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-6 bg-light radius px-3 py-2">
+            <h1 class="display-6" th:text="${account.username}"></h1>
+            <p class="lead" th:unless="${#strings.isEmpty(account.description)}"
+               th:text="${account.description}"
+            ></p>
+            <div th:if="${#strings.isEmpty(account.description)}">
+                <p th:if="${isOwner}" class="lead">자기 소개를 추가해 주세요.</p>
+                <p th:unless="${isOwner}" class="lead">자기 소개를 입력하지 않았습니다.</p>
+            </div>
+        </div>
+        <div class="col-2 text-center">
+            <img th:if="${#strings.isEmpty(account.image)}" src="/images/default-profile-image.jpg"
+                 width="150" height="150"/>
+            <img th:unless="${#strings.isEmpty(account.image)}" th:src="${account.image}"
+                 width="150" height="150"/>
+        </div>
+    </div>
+    <div class="row mt-2 justify-content-center">
+        <div class="col-6 bg-light radius">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel"
+                     aria-labelledby="profile-tab" tabindex="0">
+                    <ul class="my-4 px-3">
+                        <li class="row list-group-item info-item">
+                            <i class="col-1 fa fa-envelope-o"></i>
+                            <span class="col-9 mx-2" th:text="${account.email}"></span>
+                        </li>
+                        <li class="row list-group-item info-item">
+                            <i class="col-1 fa fa-address-card-o"></i>
+                            <span class="col-9 mx-2" th:text="${account.username + ' (닉네임 변경일 : ' + #temporals.format(account.joinedAt, 'yyyy년 MM월 dd일') + ')'}"></span>
+                        </li>
+                        <li class="row list-group-item info-item">
+                            <i class="col-1 fa fa-calendar-o"></i>
+                            <span class="col-9 mx-2" th:text="${'가입일 : ' + #temporals.format(account.joinedAt, 'yyyy년 MM월 dd일')}"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel"
+                     aria-labelledby="config-tab" tabindex="0">
+
+                </div>
+            </div>
+        </div>
+        <div class="col-2">
+            <ul class="nav flex-column nav-pills" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="profile-tab" data-bs-toggle="tab"
+                            data-bs-target="#home-tab-pane" type="button" role="tab"
+                            aria-controls="home-tab-pane" aria-selected="true">
+                        회원 정보
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button th:if="${isOwner}"
+                            class="nav-link" id="config-tab" data-bs-toggle="tab"
+                            data-bs-target="#profile-tab-pane" type="button" role="tab"
+                            aria-controls="profile-tab-pane" aria-selected="false">
+                        설정
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+<style>
+    .info-item {
+        font-size: 20px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+</style>
