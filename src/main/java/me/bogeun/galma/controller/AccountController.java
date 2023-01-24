@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 @Controller
@@ -58,6 +59,11 @@ public class AccountController {
         model.addAttribute("isOwner", currentAccount.equals(account));
 
         return "account/profile";
+    }
+
+    @GetMapping("/test/1")
+    public void test1() {
+        throw new NoSuchElementException("no such");
     }
 
 }
