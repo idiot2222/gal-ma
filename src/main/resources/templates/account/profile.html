@@ -7,7 +7,7 @@
 <div class="container">
     <div class="row mt-5 justify-content-center">
         <div class="col-6 bg-light radius px-3 py-2">
-            <h1 class="display-6" th:text="${account.username}"></h1>
+            <h1 class="display-6" th:text="${account.nickname}"></h1>
             <p class="lead" th:unless="${#strings.isEmpty(account.description)}"
                th:text="${account.description}"
             ></p>

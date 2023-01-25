@@ -12,6 +12,14 @@
               class="my-5" th:object="${signUpForm}"
         >
             <div class="mb-4 form mx-auto">
+                <label for="nickname" class="form-label">닉네임</label>
+                <input type="text" class="form-control"
+                       name="nickname" id="nickname" th:field="*{nickname}"
+                       placeholder="다른 사용자들에게 보여줄 닉네임을 입력해주세요." required>
+                <small th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"
+                       class="text-danger right">Invalid Nickname!!!</small>
+            </div>
+            <div class="mb-4 form mx-auto">
                 <label for="username" class="form-label">아이디</label>
                 <input type="text" class="form-control"
                        name="username" id="username" th:field="*{username}"

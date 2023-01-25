@@ -17,6 +17,10 @@ public class SignUpForm {
     private String username;
 
     @NotBlank
+    @Length(min = 3, max = 20, message = "닉네임은 3자 이상, 20자 이하입니다.")
+    private String nickname;
+
+    @NotBlank
     @Length(min = 10, max = 30, message = "비밀번호는 10자 이상, 30자 이하입니다.")
     private String password;
 

@@ -41,12 +41,15 @@
                                 </div>
                                 <div class="col-5">
                                     <input th:if="${changeableNickname}" id="nickname" name="nickname" type="text"
-                                           th:value="${account.username}" class="form-control text-truncate">
+                                           th:value="${account.nickname}" class="form-control text-truncate">
                                     <input th:unless="${changeableNickname}" id="nickname" name="nickname" type="text"
-                                           th:value="${account.username}" class="form-control text-truncate" disabled>
+                                           th:value="${account.nickname}" class="form-control text-truncate" disabled>
+                                    <div>
+                                        <small th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">Invalid Nickname!!!</small>
+                                    </div>
                                 </div>
                                 <div class="col-5">
-                                    <input name="nickname" type="text" class="form-control text-truncate" disabled
+                                    <input type="text" class="form-control text-truncate" disabled
                                            th:value="${#temporals.format(account.joinedAt, 'yyyy-MM-dd HH:mm:ss')}">
                                     <div>
                                         <small th:if="${changeableNickname}" class="text-success text-opacity-75">닉네임 변경이 가능합니다.</small>
