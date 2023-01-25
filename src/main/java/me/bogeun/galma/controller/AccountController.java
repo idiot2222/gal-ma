@@ -61,9 +61,4 @@ public class AccountController {
         return "account/profile";
     }
 
-    @GetMapping("/test/1")
-    public void test1() {
-        throw new NoSuchElementException("no such");
-    }
-
 }
