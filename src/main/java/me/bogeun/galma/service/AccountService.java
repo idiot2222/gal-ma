@@ -1,6 +1,7 @@
 package me.bogeun.galma.service;
 
 import lombok.RequiredArgsConstructor;
+import me.bogeun.galma.payload.AccountUpdateForm;
 import me.bogeun.galma.payload.SignUpForm;
 import me.bogeun.galma.entity.Account;
 import me.bogeun.galma.entity.UserAccount;
@@ -45,5 +46,17 @@ public class AccountService implements UserDetailsService {
         Account account = accountRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Invalid username."));
 
         return new UserAccount(account);
+    }
+
+    public void updateUserInfo(Account account, AccountUpdateForm updateForm) {
+        if(!updateForm.getNickname().isBlank()) {
+            account.setNickname(updateForm.getNickname());
+        }
+
+        if(!updateForm.getPassword().isBlank()) {
+            account.setPassword(passwordEncoder.encode(updateForm.getPassword()));
+        }
+
+        account.setDescription(updateForm.getDescription());
     }
 }

@@ -26,7 +26,8 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel"
                      aria-labelledby="profile-tab" tabindex="0">
-                    <form class="py-3 px-3 form-group">
+                    <form class="py-3 px-3 form-group" th:object="${accountUpdateForm}" method="post"
+                          th:action="@{/profile/{username}/update(username=${#authentication.principal.username})}">
                         <div class="mb-2">
                             <div class="row fs-4">
                                 <div class="col-1 my-auto">
@@ -74,6 +75,25 @@
                                 <div class="col-10">
                                     <input id="email" name="email" type="text"
                                            th:value="${account.email}" class="form-control text-truncate" disabled>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-5">
+                            <div class="row fs-4">
+                                <div class="col-1 my-auto">
+                                    <i class="fa fa-lock"></i>
+                                </div>
+                                <div class="col-10">
+                                    <label class="form-label my-auto" for="password">비밀번호</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-1">
+                                </div>
+                                <div class="col-10">
+                                    <input id="password" name="password" type="password"
+                                           class="form-control text-truncate">
                                 </div>
                             </div>
                         </div>

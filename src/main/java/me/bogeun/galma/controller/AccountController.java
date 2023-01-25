@@ -1,10 +1,12 @@
 package me.bogeun.galma.controller;
 
 import lombok.RequiredArgsConstructor;
+import me.bogeun.galma.payload.AccountUpdateForm;
 import me.bogeun.galma.payload.SignUpForm;
 import me.bogeun.galma.entity.Account;
 import me.bogeun.galma.service.AccountService;
 import me.bogeun.galma.utils.CurrentUser;
+import me.bogeun.galma.validator.AccountUpdateValidator;
 import me.bogeun.galma.validator.SignUpValidator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -25,6 +27,7 @@ public class AccountController {
     private final AccountService accountService;
 
     private final SignUpValidator signUpValidator;
+    private final AccountUpdateValidator accountUpdateValidator;
 
     @Value("${config.nickname-change-days}")
     private int nicknameChangeDays;
@@ -45,7 +48,7 @@ public class AccountController {
     @PostMapping("/sign-up")
     public String postSignUp(@Valid @ModelAttribute SignUpForm signUpForm, Errors errors) {
         signUpValidator.validate(signUpForm, errors);
-        if(errors.hasErrors()) {
+        if (errors.hasErrors()) {
             return "account/sign-up";
         }
 
@@ -71,14 +74,36 @@ public class AccountController {
         Account account = accountService.getAccountByUsername(username);
         boolean isOwner = currentAccount.equals(account);
 
-        if(!isOwner) {
+        if (!isOwner) {
             throw new BadCredentialsException("have no access.");
         }
 
         model.addAttribute(account);
         model.addAttribute("changeableNickname", account.isChangeableNickname(nicknameChangeDays));
+        model.addAttribute(new AccountUpdateForm());
 
         return "account/profile-update";
+    }
+
+    @PostMapping("/profile/{username}/update")
+    public String postProfileUpdate(@PathVariable String username, @CurrentUser Account currentAccount,
+                                    @Valid @ModelAttribute AccountUpdateForm updateForm, Errors errors) {
+        if (!username.equals(currentAccount.getUsername())) {
+            throw new BadCredentialsException("have no access.");
+        }
+
+        Account account = accountService.getAccountByUsername(username);
+        if (account.getNickname().equals(updateForm.getNickname())) {
+            updateForm.setNickname("");
+        }
+        accountUpdateValidator.validate(updateForm, errors);
+        if (errors.hasErrors()) {
+            return "account/profile-update";
+        }
+
+        accountService.updateUserInfo(account, updateForm);
+
+        return "redirect:/profile/" + username;
     }
 
 }

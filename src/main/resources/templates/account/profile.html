@@ -32,19 +32,18 @@
                      aria-labelledby="profile-tab" tabindex="0">
                     <ul class="my-4 px-3">
                         <li class="row list-group-item info-item">
-                            <i class="col-1 fa fa-envelope-o text-success"></i>
-                            <span class="col-9 mx-2" th:text="${account.email}"></span>
-                        </li>
-                        <li class="row list-group-item info-item">
                             <i class="col-1 fa fa-address-card-o text-success"></i>
                             <span class="col-9 mx-2" >
                                 <span th:text="${account.username}"></span>
-                                <span th:if="${isOwner}" th:text="${' (닉네임 변경일 : ' + #temporals.format(account.joinedAt, 'yyyy년 MM월 dd일') + ')'}"></span>
                             </span>
-                            </li>
+                        </li>
                         <li class="row list-group-item info-item">
                             <i class="col-1 fa fa-calendar-o text-success"></i>
                             <span class="col-9 mx-2" th:text="${#temporals.format(account.joinedAt, 'yyyy년 MM월 dd일 가입')}"></span>
+                        </li>
+                        <li class="row list-group-item info-item">
+                            <i class="col-1 fa fa-envelope-o text-success"></i>
+                            <span class="col-9 mx-2" th:text="${account.email}"></span>
                         </li>
                         <div th:if="${isOwner}" class="right my-4 px-3">
                             <small class="text-secondary">빨갛게 표시된 정보는 다른 회원들에게는 공개되지 않습니다.</small>
