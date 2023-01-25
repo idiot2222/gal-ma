@@ -1,7 +1,7 @@
 package me.bogeun.galma.controller;
 
 import lombok.RequiredArgsConstructor;
-import me.bogeun.galma.dto.SignUpDto;
+import me.bogeun.galma.payload.SignUpForm;
 import me.bogeun.galma.entity.Account;
 import me.bogeun.galma.service.AccountService;
 import me.bogeun.galma.utils.CurrentUser;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 @Controller
@@ -33,19 +32,19 @@ public class AccountController {
 
     @GetMapping("/sign-up")
     public String getSignUp(Model model) {
-        model.addAttribute(new SignUpDto());
+        model.addAttribute(new SignUpForm());
 
         return "account/sign-up";
     }
 
     @PostMapping("/sign-up")
-    public String postSignUp(@Valid @ModelAttribute SignUpDto signUpDto, Errors errors) {
-        signUpValidator.validate(signUpDto, errors);
+    public String postSignUp(@Valid @ModelAttribute SignUpForm signUpForm, Errors errors) {
+        signUpValidator.validate(signUpForm, errors);
         if(errors.hasErrors()) {
             return "account/sign-up";
         }
 
-        accountService.signUp(signUpDto);
+        accountService.signUp(signUpForm);
 
         return "redirect:/login";
     }

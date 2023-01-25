@@ -1,4 +1,4 @@
-package me.bogeun.galma.dto;
+package me.bogeun.galma.payload;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
-public class SignUpDto {
+public class SignUpForm {
 
     @NotBlank
     @Length(min = 5, max = 20, message = "아이디는 5자 이상, 20자 이하입니다.")

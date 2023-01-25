@@ -1,7 +1,7 @@
 package me.bogeun.galma.service;
 
 import lombok.RequiredArgsConstructor;
-import me.bogeun.galma.dto.SignUpDto;
+import me.bogeun.galma.payload.SignUpForm;
 import me.bogeun.galma.entity.Account;
 import me.bogeun.galma.entity.UserAccount;
 import me.bogeun.galma.repository.AccountRepository;
@@ -23,11 +23,11 @@ public class AccountService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public Account signUp(SignUpDto signUpDto) {
+    public Account signUp(SignUpForm signUpForm) {
         Account account = Account.builder()
-                .username(signUpDto.getUsername())
-                .password(passwordEncoder.encode(signUpDto.getPassword()))
-                .email(signUpDto.getEmail())
+                .username(signUpForm.getUsername())
+                .password(passwordEncoder.encode(signUpForm.getPassword()))
+                .email(signUpForm.getEmail())
                 .joinedAt(LocalDateTime.now())
                 .build();
 

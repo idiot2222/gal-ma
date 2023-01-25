@@ -1,6 +1,6 @@
 package me.bogeun.galma.controller;
 
-import me.bogeun.galma.dto.SignUpDto;
+import me.bogeun.galma.payload.SignUpForm;
 import me.bogeun.galma.service.AccountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,12 +33,12 @@ class AccountControllerTest {
 
     @BeforeEach
     void beforeEach() {
-        SignUpDto signUpDto = new SignUpDto();
-        signUpDto.setUsername("username");
-        signUpDto.setPassword("password123");
-        signUpDto.setEmail("user@email.com");
+        SignUpForm signUpForm = new SignUpForm();
+        signUpForm.setUsername("username");
+        signUpForm.setPassword("password123");
+        signUpForm.setEmail("user@email.com");
 
-        accountService.signUp(signUpDto);
+        accountService.signUp(signUpForm);
     }
 
 
