@@ -12,7 +12,7 @@
                th:text="${account.description}"
             ></p>
             <div th:if="${#strings.isEmpty(account.description)}">
-                <a th:if="${isOwner}" th:href="@{/profile/idiot2222/update}" class="link-secondary">
+                <a th:if="${isOwner}" th:href="@{/profile/{username}/update(username=${#authentication.principal.username})}" class="link-secondary">
                     <p class="lead">자기 소개를 추가해 주세요.</p>
                 </a>
                 <p th:unless="${isOwner}" class="lead text-secondary">자기 소개를 입력하지 않았습니다.</p>
