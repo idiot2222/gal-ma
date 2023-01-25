@@ -1,0 +1,149 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+<div class="container">
+    <div class="row my-5 justify-content-center">
+        <div class="col-2">
+            <ul class="nav flex-column list-group" id="myTab" role="tablist">
+                <li class="list-group-item list-group-item-action nav-link active" aria-current="true"
+                    id="profile-tab" data-bs-toggle="tab"
+                    data-bs-target="#home-tab-pane" role="tab"
+                    aria-controls="home-tab-pane" aria-selected="true">
+                    회원 정보
+                </li>
+                <li class="list-group-item list-group-item-action list-group-item-danger nav-link"
+                    id="config-tab" data-bs-toggle="tab"
+                    data-bs-target="#profile-tab-pane" role="tab"
+                    aria-controls="profile-tab-pane" aria-selected="false">
+                    계정
+                </li>
+            </ul>
+        </div>
+        <div class="col-6 bg-light radius px-3 py-2">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel"
+                     aria-labelledby="profile-tab" tabindex="0">
+                    <form class="py-3 px-3 form-group">
+                        <div class="mb-2">
+                            <div class="row fs-4">
+                                <div class="col-1 my-auto">
+                                    <i class="col-1 fa fa-address-card-o"></i>
+                                </div>
+                                <div class="col-10">
+                                    <label class="form-label my-auto" for="nickname">닉네임</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-1">
+                                </div>
+                                <div class="col-5">
+                                    <input th:if="${changeableNickname}" id="nickname" name="nickname" type="text"
+                                           th:value="${account.username}" class="form-control text-truncate">
+                                    <input th:unless="${changeableNickname}" id="nickname" name="nickname" type="text"
+                                           th:value="${account.username}" class="form-control text-truncate" disabled>
+                                </div>
+                                <div class="col-5">
+                                    <input name="nickname" type="text" class="form-control text-truncate" disabled
+                                           th:value="${#temporals.format(account.joinedAt, 'yyyy-MM-dd HH:mm:ss')}">
+                                    <div>
+                                        <small th:if="${changeableNickname}" class="text-success text-opacity-75">닉네임 변경이 가능합니다.</small>
+                                        <small th:unless="${changeableNickname}" class="text-danger text-opacity-75">마지막 닉네임 변경 30일 후부터 변경이 가능합니다.</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-5">
+                            <div class="row fs-4">
+                                <div class="col-1 my-auto">
+                                    <i class="fa fa-envelope-o"></i>
+                                </div>
+                                <div class="col-10">
+                                    <label class="form-label my-auto" for="email">이메일</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-1">
+                                </div>
+                                <div class="col-10">
+                                    <input id="email" name="email" type="text"
+                                           th:value="${account.email}" class="form-control text-truncate" disabled>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-5">
+                            <div class="row fs-4">
+                                <div class="col-1 my-auto">
+                                    <i class="fa fa-pencil"></i>
+                                </div>
+                                <div class="col-10">
+                                    <label class="form-label my-auto" for="description">자기 소개</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-1">
+                                </div>
+                                <div class="col-10">
+                                    <textarea id="description" name="description" rows="4"
+                                           th:text="${account.description}" class="form-control">
+                                    </textarea>
+                                    <div class="right">
+                                        <small id="description-counter" class="text-secondary">0 / 100</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <input type="submit" class="btn btn-primary right" value="확인">
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel"
+                     aria-labelledby="config-tab" tabindex="0">
+                    <div class="my-4 px-3">
+                        babo
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+<script>
+    const description = document.querySelector("#description");
+    const descriptionCounter = document.querySelector("#description-counter");
+
+    description.addEventListener("input", function() {
+        let len = description.value.length;
+
+        if(len >= 100) {
+            description.value = description.value.substring(0, 100);
+            len = 100;
+        }
+
+        if(len < 100) {
+            descriptionCounter.classList.remove("text-danger");
+            descriptionCounter.classList.add("text-secondary");
+        }
+        else {
+            descriptionCounter.classList.remove("text-secondary");
+            descriptionCounter.classList.add("text-danger");
+        }
+
+        descriptionCounter.innerHTML = `${len} / 100`;
+    });
+</script>
+
+<style>
+    textarea {
+        resize: vertical;
+    }
+</style>

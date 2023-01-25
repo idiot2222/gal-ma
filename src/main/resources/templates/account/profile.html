@@ -12,8 +12,10 @@
                th:text="${account.description}"
             ></p>
             <div th:if="${#strings.isEmpty(account.description)}">
-                <p th:if="${isOwner}" class="lead">자기 소개를 추가해 주세요.</p>
-                <p th:unless="${isOwner}" class="lead">자기 소개를 입력하지 않았습니다.</p>
+                <a th:if="${isOwner}" th:href="@{/profile/idiot2222/update}" class="link-secondary">
+                    <p class="lead">자기 소개를 추가해 주세요.</p>
+                </a>
+                <p th:unless="${isOwner}" class="lead text-secondary">자기 소개를 입력하지 않았습니다.</p>
             </div>
         </div>
         <div class="col-2 text-center">
@@ -30,41 +32,49 @@
                      aria-labelledby="profile-tab" tabindex="0">
                     <ul class="my-4 px-3">
                         <li class="row list-group-item info-item">
-                            <i class="col-1 fa fa-envelope-o"></i>
+                            <i class="col-1 fa fa-envelope-o text-success"></i>
                             <span class="col-9 mx-2" th:text="${account.email}"></span>
                         </li>
                         <li class="row list-group-item info-item">
-                            <i class="col-1 fa fa-address-card-o"></i>
-                            <span class="col-9 mx-2" th:text="${account.username + ' (닉네임 변경일 : ' + #temporals.format(account.joinedAt, 'yyyy년 MM월 dd일') + ')'}"></span>
-                        </li>
+                            <i class="col-1 fa fa-address-card-o text-success"></i>
+                            <span class="col-9 mx-2" >
+                                <span th:text="${account.username}"></span>
+                                <span th:if="${isOwner}" th:text="${' (닉네임 변경일 : ' + #temporals.format(account.joinedAt, 'yyyy년 MM월 dd일') + ')'}"></span>
+                            </span>
+                            </li>
                         <li class="row list-group-item info-item">
-                            <i class="col-1 fa fa-calendar-o"></i>
-                            <span class="col-9 mx-2" th:text="${'가입일 : ' + #temporals.format(account.joinedAt, 'yyyy년 MM월 dd일')}"></span>
+                            <i class="col-1 fa fa-calendar-o text-success"></i>
+                            <span class="col-9 mx-2" th:text="${#temporals.format(account.joinedAt, 'yyyy년 MM월 dd일 가입')}"></span>
                         </li>
+                        <div th:if="${isOwner}" class="right my-4 px-3">
+                            <small class="text-secondary">빨갛게 표시된 정보는 다른 회원들에게는 공개되지 않습니다.</small>
+                        </div>
                     </ul>
                 </div>
                 <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel"
                      aria-labelledby="config-tab" tabindex="0">
-
+                    <div class="my-4 px-3">
+                        babo
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-2">
-            <ul class="nav flex-column nav-pills" id="myTab" role="tablist">
+            <ul class="nav d-flex flex-column nav-pills" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="profile-tab" data-bs-toggle="tab"
+                    <div class="nav-link active" id="profile-tab" data-bs-toggle="tab"
                             data-bs-target="#home-tab-pane" type="button" role="tab"
                             aria-controls="home-tab-pane" aria-selected="true">
                         회원 정보
-                    </button>
+                    </div>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button th:if="${isOwner}"
+                    <div th:if="${isOwner}"
                             class="nav-link" id="config-tab" data-bs-toggle="tab"
                             data-bs-target="#profile-tab-pane" type="button" role="tab"
                             aria-controls="profile-tab-pane" aria-selected="false">
                         설정
-                    </button>
+                    </div>
                 </li>
             </ul>
         </div>

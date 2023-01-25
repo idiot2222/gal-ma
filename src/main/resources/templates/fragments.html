@@ -34,8 +34,8 @@
                         내 정보
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" th:href="@{/profile/{id}(id=${#authentication.principal.username})}">내 정보</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" th:href="@{/profile/{username}(username=${#authentication.principal.username})}">내 정보</a></li>
+                        <li><a class="dropdown-item" th:href="@{/profile/{username}/update(username=${#authentication.principal.username})}">정보 수정</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>

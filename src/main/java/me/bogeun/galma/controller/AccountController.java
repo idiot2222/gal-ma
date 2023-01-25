@@ -6,6 +6,8 @@ import me.bogeun.galma.entity.Account;
 import me.bogeun.galma.service.AccountService;
 import me.bogeun.galma.utils.CurrentUser;
 import me.bogeun.galma.validator.SignUpValidator;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -23,6 +25,9 @@ public class AccountController {
     private final AccountService accountService;
 
     private final SignUpValidator signUpValidator;
+
+    @Value("${config.nickname-change-days}")
+    private int nicknameChangeDays;
 
 
     @GetMapping("/login")
@@ -58,6 +63,22 @@ public class AccountController {
         model.addAttribute("isOwner", currentAccount.equals(account));
 
         return "account/profile";
+    }
+
+    @GetMapping("/profile/{username}/update")
+    public String getProfileUpdate(@PathVariable String username, Model model,
+                                   @CurrentUser Account currentAccount) {
+        Account account = accountService.getAccountByUsername(username);
+        boolean isOwner = currentAccount.equals(account);
+
+        if(!isOwner) {
+            throw new BadCredentialsException("have no access.");
+        }
+
+        model.addAttribute(account);
+        model.addAttribute("changeableNickname", account.isChangeableNickname(nicknameChangeDays));
+
+        return "account/profile-update";
     }
 
 }

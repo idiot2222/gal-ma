@@ -20,3 +20,6 @@ spring:
   web:
     resources:
       add-mappings: false
+
+config:
+  nickname-change-days: 14

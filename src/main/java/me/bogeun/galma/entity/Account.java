@@ -58,4 +58,14 @@ public class Account {
     public int hashCode() {
         return getClass().hashCode();
     }
+
+
+
+
+    public boolean isChangeableNickname(int nicknameChangeDays) {
+        LocalDateTime t = joinedAt.plusDays(nicknameChangeDays);
+
+        return t.compareTo(LocalDateTime.now()) < 0;
+    }
+
 }
