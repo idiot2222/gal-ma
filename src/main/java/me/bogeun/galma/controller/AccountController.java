@@ -1,15 +1,16 @@
 package me.bogeun.galma.controller;
 
 import lombok.RequiredArgsConstructor;
+import me.bogeun.galma.entity.Account;
 import me.bogeun.galma.payload.AccountUpdateForm;
 import me.bogeun.galma.payload.SignUpForm;
-import me.bogeun.galma.entity.Account;
 import me.bogeun.galma.service.AccountService;
 import me.bogeun.galma.utils.CurrentUser;
 import me.bogeun.galma.validator.AccountUpdateValidator;
 import me.bogeun.galma.validator.SignUpValidator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -28,6 +29,8 @@ public class AccountController {
 
     private final SignUpValidator signUpValidator;
     private final AccountUpdateValidator accountUpdateValidator;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${config.nickname-change-days}")
     private int nicknameChangeDays;
@@ -79,15 +82,17 @@ public class AccountController {
         }
 
         model.addAttribute(account);
-        model.addAttribute("changeableNickname", account.isChangeableNickname(nicknameChangeDays));
         model.addAttribute(new AccountUpdateForm());
+        model.addAttribute("changeableNickname", account.isChangeableNickname(nicknameChangeDays));
+        model.addAttribute("nicknameChangeDays", nicknameChangeDays);
 
         return "account/profile-update";
     }
 
     @PostMapping("/profile/{username}/update")
-    public String postProfileUpdate(@PathVariable String username, @CurrentUser Account currentAccount,
+    public String postProfileUpdate(@PathVariable String username, @CurrentUser Account currentAccount, Model model,
                                     @Valid @ModelAttribute AccountUpdateForm updateForm, Errors errors) {
+
         if (!username.equals(currentAccount.getUsername())) {
             throw new BadCredentialsException("have no access.");
         }
@@ -96,8 +101,14 @@ public class AccountController {
         if (account.getNickname().equals(updateForm.getNickname())) {
             updateForm.setNickname("");
         }
+
+        if (!passwordEncoder.matches(updateForm.getPassword(), account.getPassword())) {
+            errors.rejectValue("password", "invalid password.", "비밀번호가 틀렸습니다.");
+        }
         accountUpdateValidator.validate(updateForm, errors);
         if (errors.hasErrors()) {
+            model.addAttribute(account);
+
             return "account/profile-update";
         }
 

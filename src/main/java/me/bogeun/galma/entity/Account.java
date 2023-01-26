@@ -40,14 +40,16 @@ public class Account {
 
 
     @Builder
-    public Account(String username, String password, String email, LocalDateTime joinedAt, String image, String description) {
+    public Account(String username, String nickname, String password, String email, LocalDateTime joinedAt, String image, String description) {
         this.username = username;
+        this.nickname = nickname;
         this.password = password;
         this.email = email;
         this.joinedAt = joinedAt;
         this.image = image;
         this.description = description;
     }
+
 
     @Override
     public boolean equals(Object o) {

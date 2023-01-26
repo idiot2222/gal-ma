@@ -22,7 +22,6 @@ public class AccountUpdateValidator implements Validator {
     public void validate(Object target, Errors errors) {
         AccountUpdateForm updateForm = (AccountUpdateForm) target;
         String nickname = updateForm.getNickname();
-        String password = updateForm.getPassword();
 
 
         if(nickname.length() != 0 && nickname.length() < 3 || nickname.length() > 20) {
@@ -30,10 +29,6 @@ public class AccountUpdateValidator implements Validator {
         }
         if (accountRepository.existsByNickname(nickname)) {
             errors.rejectValue("nickname", "duplicated nickname.", "이미 사용중인 닉네임입니다.");
-        }
-
-        if(password.length() != 0 && password.length() < 10) {
-            errors.rejectValue("password", "invalid password.", "비밀번호는 10자 이상입니다.");
         }
     }
 }
