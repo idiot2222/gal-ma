@@ -57,4 +57,8 @@ public class AccountService implements UserDetailsService {
 
         account.setDescription(updateForm.getDescription());
     }
+
+    public void updatePassword(Account account, String newPassword) {
+        account.setPassword(passwordEncoder.encode(newPassword));
+    }
 }

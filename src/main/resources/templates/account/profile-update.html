@@ -7,145 +7,126 @@
 <div class="container">
     <div class="row my-5 justify-content-center">
         <div class="col-2">
-            <ul class="nav flex-column list-group" id="myTab" role="tablist">
-                <li class="list-group-item list-group-item-action nav-link active" aria-current="true"
-                    id="profile-tab" data-bs-toggle="tab"
-                    data-bs-target="#home-tab-pane" role="tab"
-                    aria-controls="home-tab-pane" aria-selected="true">
-                    회원 정보
-                </li>
-                <li class="list-group-item list-group-item-action list-group-item-danger nav-link"
-                    id="config-tab" data-bs-toggle="tab"
-                    data-bs-target="#profile-tab-pane" role="tab"
-                    aria-controls="profile-tab-pane" aria-selected="false">
-                    계정
-                </li>
+            <ul class="flex-column list-group">
+                <a th:href="@{/profile/{username}/update(username=${#authentication.principal.username})}"
+                    class="list-group-item list-group-item-action active">회원 정보</a>
+                <a th:href="@{/profile/{username}/update/account(username=${#authentication.principal.username})}"
+                   class="list-group-item list-group-item-action list-group-item-danger">계정</a>
             </ul>
         </div>
         <div class="col-6 bg-light radius px-3 py-2">
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel"
-                     aria-labelledby="profile-tab" tabindex="0">
-                    <form class="py-3 px-3 form-group" th:object="${accountUpdateForm}" method="post"
-                          th:action="@{/profile/{username}/update(username=${#authentication.principal.username})}">
+            <form class="py-3 px-3 form-group" th:object="${accountUpdateForm}" method="post"
+                  th:action="@{/profile/{username}/update(username=${#authentication.principal.username})}">
 
-                        <div class="mb-3">
-                            <div class="row fs-4">
-                                <div class="col-1 my-auto">
-                                    <i class="col-1 fa fa-address-card-o"></i>
-                                </div>
-                                <div class="col-10">
-                                    <label class="form-label my-auto" for="nickname">닉네임</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-1">
-                                </div>
-                                <div class="col-5">
-                                    <input th:if="${changeableNickname}" id="nickname" type="text"
-                                           th:value="${account.nickname}" name="nickname" class="form-control text-truncate">
-                                    <input th:unless="${changeableNickname}" id="nickname" type="text" disabled
-                                           th:value="${account.nickname}" class="form-control text-truncate">
-                                    <input th:unless="${changeableNickname}" name="nickname" type="hidden"
-                                           th:value="${account.nickname}">
+                <div class="mb-3">
+                    <div class="row fs-4">
+                        <div class="col-1 my-auto">
+                            <i class="col-1 fa fa-address-card-o"></i>
+                        </div>
+                        <div class="col-10">
+                            <label class="form-label my-auto" for="nickname">닉네임</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                        </div>
+                        <div class="col-5">
+                            <input th:if="${changeableNickname}" id="nickname" type="text"
+                                   th:value="${account.nickname}" name="nickname" class="form-control text-truncate">
+                            <input th:unless="${changeableNickname}" id="nickname" type="text" disabled
+                                   th:value="${account.nickname}" class="form-control text-truncate">
+                            <input th:unless="${changeableNickname}" name="nickname" type="hidden"
+                                   th:value="${account.nickname}">
 
-                                    <div>
-                                        <small class="text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">Invalid Nickname!!!</small>
-                                    </div>
-                                </div>
-                                <div class="col-5">
-                                    <input type="text" class="form-control text-truncate" disabled
-                                           th:value="${#temporals.format(account.nicknameChangedAt, 'yyyy-MM-dd HH:mm:ss')}">
-                                    <div>
-                                        <small th:if="${changeableNickname}" class="text-success text-opacity-75">닉네임 변경이 가능합니다.</small>
-                                        <small th:unless="${changeableNickname}" class="text-danger text-opacity-75"
-                                            th:text="'마지막 닉네임 변경 ' + ${nicknameChangeDays} + '일 후부터 변경이 가능합니다.'"
-                                        ></small>
-                                    </div>
-                                </div>
+                            <div class="right">
+                                <small class="text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">Invalid Nickname!!!</small>
                             </div>
                         </div>
-
-                        <div class="mb-4">
-                            <div class="row fs-4">
-                                <div class="col-1 my-auto">
-                                    <i class="fa fa-envelope-o"></i>
-                                </div>
-                                <div class="col-10">
-                                    <label class="form-label my-auto" for="email">이메일</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-1">
-                                </div>
-                                <div class="col-10">
-                                    <input id="email" name="email" type="text"
-                                           th:value="${account.email}" class="form-control text-truncate" disabled>
-                                </div>
+                        <div class="col-5">
+                            <input type="text" class="form-control text-truncate" disabled
+                                   th:value="${#temporals.format(account.nicknameChangedAt, 'yyyy-MM-dd HH:mm:ss')}">
+                            <div>
+                                <small th:if="${changeableNickname}" class="text-success text-opacity-75">닉네임 변경이 가능합니다.</small>
+                                <small th:unless="${changeableNickname}" class="text-danger text-opacity-75"
+                                       th:text="'마지막 닉네임 변경 ' + ${nicknameChangeDays} + '일 후부터 변경이 가능합니다.'"
+                                ></small>
                             </div>
                         </div>
-
-                        <div class="mb-4">
-                            <div class="row fs-4">
-                                <div class="col-1 my-auto">
-                                    <i class="fa fa-pencil"></i>
-                                </div>
-                                <div class="col-10">
-                                    <label class="form-label my-auto" for="description">자기 소개</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-1">
-                                </div>
-                                <div class="col-10">
-                                    <textarea id="description" name="description" rows="4"
-                                           th:text="${account.description}" class="form-control">
-                                    </textarea>
-                                    <div class="right">
-                                        <small id="description-counter" class="text-secondary">0 / 100</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <div class="row fs-4">
-                                <div class="col-1 my-auto">
-                                    <i class="fa fa-unlock-alt"></i>
-                                </div>
-                                <div class="col-10">
-                                    <label class="form-label my-auto" for="password">비밀번호 확인</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-1">
-                                </div>
-                                <div class="col-10">
-                                    <input id="password" name="password" type="password"
-                                           class="form-control text-truncate" required>
-                                    <div class="right">
-                                        <small class="text-secondary">정보 수정에 앞서 확인하기 위한 비밀번호 확인입니다.</small>
-                                    </div>
-                                    <div class="right">
-                                        <small th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
-                                               class="text-danger right" >Invalid Password!!!</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mb-4 right">
-                            <input type="submit" class="btn btn-primary" value="확인">
-                        </div>
-                    </form>
-                </div>
-                <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel"
-                     aria-labelledby="config-tab" tabindex="0">
-                    <div class="my-4 px-3">
-                        babo
                     </div>
                 </div>
-            </div>
+
+                <div class="mb-4">
+                    <div class="row fs-4">
+                        <div class="col-1 my-auto">
+                            <i class="fa fa-envelope-o"></i>
+                        </div>
+                        <div class="col-10">
+                            <label class="form-label my-auto" for="email">이메일</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                        </div>
+                        <div class="col-10">
+                            <input id="email" name="email" type="text"
+                                   th:value="${account.email}" class="form-control text-truncate" disabled>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="row fs-4">
+                        <div class="col-1 my-auto">
+                            <i class="fa fa-pencil"></i>
+                        </div>
+                        <div class="col-10">
+                            <label class="form-label my-auto" for="description">자기 소개</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                        </div>
+                        <div class="col-10">
+                                    <textarea id="description" name="description" rows="4"
+                                              th:text="${account.description}" class="form-control">
+                                    </textarea>
+                            <div class="right">
+                                <small id="description-counter" class="text-secondary">0 / 100</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <div class="row fs-4">
+                        <div class="col-1 my-auto">
+                            <i class="fa fa-unlock-alt"></i>
+                        </div>
+                        <div class="col-10">
+                            <label class="form-label my-auto" for="password">비밀번호 확인</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                        </div>
+                        <div class="col-10">
+                            <input id="password" name="password" type="password"
+                                   class="form-control text-truncate" required>
+                            <div class="right">
+                                <small class="text-secondary">정보 수정에 앞서 확인하기 위한 비밀번호 확인입니다.</small>
+                            </div>
+                            <div class="right">
+                                <small th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+                                       class="text-danger right" >Invalid Password!!!</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4 right">
+                    <input type="submit" class="btn btn-primary" value="확인">
+                </div>
+            </form>
         </div>
     </div>
 </div>

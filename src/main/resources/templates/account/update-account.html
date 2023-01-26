@@ -1,0 +1,117 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+<div class="container">
+    <div class="row my-5 justify-content-center">
+        <div class="col-2">
+            <ul class="flex-column list-group">
+                <a th:href="@{/profile/{username}/update(username=${#authentication.principal.username})}"
+                   class="list-group-item list-group-item-action">회원 정보</a>
+                <a th:href="@{/profile/{username}/update/account(username=${#authentication.principal.username})}"
+                   class="list-group-item list-group-item-action list-group-item-danger active">계정</a>
+            </ul>
+        </div>
+
+        <div class="col-6 bg-light radius px-3 py-2">
+            <form class="py-3 px-3 form-group" th:object="${changePasswordForm}" method="post"
+                  th:action="@{/profile/{username}/update/account(username=${#authentication.principal.username})}">
+
+                <div class="mb-4">
+                    <div class="row fs-4">
+                        <div class="col-1 my-auto">
+                            <i class="fa fa-lock"></i>
+                        </div>
+                        <div class="col-10">
+                            <label class="form-label my-auto" for="newPassword">비밀번호 변경</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                        </div>
+                        <div class="col-10">
+                            <input id="newPassword" name="newPassword" type="password" placeholder="새로운 비밀번호"
+                                   class="form-control text-truncate mb-2" required>
+                            <div class="right">
+                                <small th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}"
+                                       class="text-danger right" >Invalid Password!!!</small>
+                            </div>
+                            <input id="newPasswordConfirm" name="newPasswordConfirm" type="password" placeholder="비밀번호 확인"
+                                   class="form-control text-truncate" required>
+                            <div class="right">
+                                <small th:if="${#fields.hasErrors('newPasswordConfirm')}" th:errors="*{newPasswordConfirm}"
+                                       class="text-danger right" >Invalid Password!!!</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4 mt-5">
+                    <div class="row fs-4">
+                        <div class="col-1 my-auto">
+                            <i class="fa fa-unlock-alt"></i>
+                        </div>
+                        <div class="col-10">
+                            <label class="form-label my-auto" for="passwordVerify">비밀번호 확인</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-1">
+                        </div>
+                        <div class="col-10">
+                            <input id="passwordVerify" name="passwordVerify" type="password" placeholder="기존 비밀번호"
+                                   class="form-control text-truncate" required>
+                            <div class="right">
+                                <small class="text-secondary">정보 수정에 앞서 확인하기 위한 비밀번호 확인입니다.</small>
+                            </div>
+                            <div class="right">
+                                <small th:if="${#fields.hasErrors('passwordVerify')}" th:errors="*{passwordVerify}"
+                                       class="text-danger right" >Invalid Password!!!</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4 right">
+                    <input type="submit" class="btn btn-primary" value="확인">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+<script>
+    const description = document.querySelector("#description");
+    const descriptionCounter = document.querySelector("#description-counter");
+
+    description.addEventListener("input", function() {
+        let len = description.value.length;
+
+        if(len >= 100) {
+            description.value = description.value.substring(0, 100);
+            len = 100;
+        }
+
+        if(len < 100) {
+            descriptionCounter.classList.remove("text-danger");
+            descriptionCounter.classList.add("text-secondary");
+        }
+        else {
+            descriptionCounter.classList.remove("text-secondary");
+            descriptionCounter.classList.add("text-danger");
+        }
+
+        descriptionCounter.innerHTML = `${len} / 100`;
+    });
+</script>
+
+<style>
+    textarea {
+        resize: vertical;
+    }
+</style>

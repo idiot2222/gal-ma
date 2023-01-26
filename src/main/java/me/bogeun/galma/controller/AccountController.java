@@ -3,6 +3,7 @@ package me.bogeun.galma.controller;
 import lombok.RequiredArgsConstructor;
 import me.bogeun.galma.entity.Account;
 import me.bogeun.galma.payload.AccountUpdateForm;
+import me.bogeun.galma.payload.ChangePasswordForm;
 import me.bogeun.galma.payload.SignUpForm;
 import me.bogeun.galma.service.AccountService;
 import me.bogeun.galma.utils.CurrentUser;
@@ -77,12 +78,11 @@ public class AccountController {
         Account account = accountService.getAccountByUsername(username);
         boolean isOwner = currentAccount.equals(account);
 
-        if (!isOwner) {
-            throw new BadCredentialsException("have no access.");
-        }
+        checkPrincipal(isOwner);
 
         model.addAttribute(account);
         model.addAttribute(new AccountUpdateForm());
+        model.addAttribute(new ChangePasswordForm());
         model.addAttribute("changeableNickname", account.isChangeableNickname(nicknameChangeDays));
         model.addAttribute("nicknameChangeDays", nicknameChangeDays);
 
@@ -93,9 +93,7 @@ public class AccountController {
     public String postProfileUpdate(@PathVariable String username, @CurrentUser Account currentAccount, Model model,
                                     @Valid @ModelAttribute AccountUpdateForm updateForm, Errors errors) {
 
-        if (!username.equals(currentAccount.getUsername())) {
-            throw new BadCredentialsException("have no access.");
-        }
+        checkPrincipal(username.equals(currentAccount.getUsername()));
 
         Account account = accountService.getAccountByUsername(username);
         if (account.getNickname().equals(updateForm.getNickname())) {
@@ -105,6 +103,7 @@ public class AccountController {
         if (!passwordEncoder.matches(updateForm.getPassword(), account.getPassword())) {
             errors.rejectValue("password", "invalid password.", "비밀번호가 틀렸습니다.");
         }
+
         accountUpdateValidator.validate(updateForm, errors);
         if (errors.hasErrors()) {
             model.addAttribute(account);
@@ -115,6 +114,43 @@ public class AccountController {
         accountService.updateUserInfo(account, updateForm);
 
         return "redirect:/profile/" + username;
+    }
+
+    @GetMapping("/profile/{username}/update/account")
+    public String getProfileUpdateAccount(@PathVariable String username, Model model) {
+        model.addAttribute(new ChangePasswordForm());
+
+        return "account/update-account";
+    }
+
+    @PostMapping("/profile/{username}/update/account")
+    public String postProfileUpdateAccount(@PathVariable String username, @CurrentUser Account currentAccount,
+                                 @Valid @ModelAttribute ChangePasswordForm passwordForm, Errors errors) {
+
+        Account account = accountService.getAccountByUsername(username);
+
+        checkPrincipal(username.equals(currentAccount.getUsername()));
+
+        if(!passwordForm.getNewPassword().equals(passwordForm.getNewPasswordConfirm())) {
+            errors.rejectValue("newPasswordConfirm", "invalid password confirmation.", "비밀번호가 일치하지 않습니다.");
+        }
+        if (!passwordEncoder.matches(passwordForm.getPasswordVerify(), account.getPassword())) {
+            errors.rejectValue("passwordVerify", "invalid password.", "비밀번호가 틀렸습니다.");
+        }
+        if(errors.hasErrors()) {
+            return "account/update-account";
+        }
+
+        accountService.updatePassword(account, passwordForm.getNewPassword());
+
+        return "redirect:/profile/" + username;
+    }
+
+
+    private void checkPrincipal(boolean username) {
+        if (!username) {
+            throw new BadCredentialsException("have no access.");
+        }
     }
 
 }
