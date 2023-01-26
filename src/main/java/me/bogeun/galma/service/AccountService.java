@@ -30,6 +30,7 @@ public class AccountService implements UserDetailsService {
                 .password(passwordEncoder.encode(signUpForm.getPassword()))
                 .email(signUpForm.getEmail())
                 .joinedAt(LocalDateTime.now())
+                .nicknameChangedAt(LocalDateTime.now())
                 .build();
 
         return accountRepository.save(account);
@@ -51,10 +52,7 @@ public class AccountService implements UserDetailsService {
     public void updateUserInfo(Account account, AccountUpdateForm updateForm) {
         if(!updateForm.getNickname().isBlank()) {
             account.setNickname(updateForm.getNickname());
-        }
-
-        if(!updateForm.getPassword().isBlank()) {
-            account.setPassword(passwordEncoder.encode(updateForm.getPassword()));
+            account.setNicknameChangedAt(LocalDateTime.now());
         }
 
         account.setDescription(updateForm.getDescription());

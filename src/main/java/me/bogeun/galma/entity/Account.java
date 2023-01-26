@@ -30,7 +30,10 @@ public class Account {
     @Column(length = 50, unique = true)
     private String email;
 
+    @Column(updatable = false)
     private LocalDateTime joinedAt;
+
+    private LocalDateTime nicknameChangedAt;
 
     @Lob @Basic
     private String image;
@@ -40,12 +43,13 @@ public class Account {
 
 
     @Builder
-    public Account(String username, String nickname, String password, String email, LocalDateTime joinedAt, String image, String description) {
+    public Account(String username, String nickname, String password, String email, LocalDateTime joinedAt, LocalDateTime nicknameChangedAt, String image, String description) {
         this.username = username;
         this.nickname = nickname;
         this.password = password;
         this.email = email;
         this.joinedAt = joinedAt;
+        this.nicknameChangedAt = nicknameChangedAt;
         this.image = image;
         this.description = description;
     }
@@ -68,7 +72,7 @@ public class Account {
 
 
     public boolean isChangeableNickname(int nicknameChangeDays) {
-        LocalDateTime t = joinedAt.plusDays(nicknameChangeDays);
+        LocalDateTime t = nicknameChangedAt.plusDays(nicknameChangeDays);
 
         return t.compareTo(LocalDateTime.now()) < 0;
     }

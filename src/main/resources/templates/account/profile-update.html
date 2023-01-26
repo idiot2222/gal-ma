@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="col-5">
                                     <input th:if="${changeableNickname}" id="nickname" type="text"
-                                           th:value="${account.nickname}" th:field="*{nickname}" class="form-control text-truncate">
+                                           th:value="${account.nickname}" name="nickname" class="form-control text-truncate">
                                     <input th:unless="${changeableNickname}" id="nickname" type="text" disabled
                                            th:value="${account.nickname}" class="form-control text-truncate">
                                     <input th:unless="${changeableNickname}" name="nickname" type="hidden"
@@ -55,7 +55,7 @@
                                 </div>
                                 <div class="col-5">
                                     <input type="text" class="form-control text-truncate" disabled
-                                           th:value="${#temporals.format(account.joinedAt, 'yyyy-MM-dd HH:mm:ss')}">
+                                           th:value="${#temporals.format(account.nicknameChangedAt, 'yyyy-MM-dd HH:mm:ss')}">
                                     <div>
                                         <small th:if="${changeableNickname}" class="text-success text-opacity-75">닉네임 변경이 가능합니다.</small>
                                         <small th:unless="${changeableNickname}" class="text-danger text-opacity-75"
@@ -98,7 +98,7 @@
                                 <div class="col-1">
                                 </div>
                                 <div class="col-10">
-                                    <textarea id="description" name="description" rows="4" th:field="*{description}"
+                                    <textarea id="description" name="description" rows="4"
                                            th:text="${account.description}" class="form-control">
                                     </textarea>
                                     <div class="right">
@@ -111,7 +111,7 @@
                         <div class="mb-4">
                             <div class="row fs-4">
                                 <div class="col-1 my-auto">
-                                    <i class="fa fa-lock"></i>
+                                    <i class="fa fa-unlock-alt"></i>
                                 </div>
                                 <div class="col-10">
                                     <label class="form-label my-auto" for="password">비밀번호 확인</label>
@@ -122,12 +122,11 @@
                                 </div>
                                 <div class="col-10">
                                     <input id="password" name="password" type="password"
-                                           th:field="*{password}"
                                            class="form-control text-truncate" required>
                                     <div class="right">
                                         <small class="text-secondary">정보 수정에 앞서 확인하기 위한 비밀번호 확인입니다.</small>
                                     </div>
-                                    <div>
+                                    <div class="right">
                                         <small th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
                                                class="text-danger right" >Invalid Password!!!</small>
                                     </div>
