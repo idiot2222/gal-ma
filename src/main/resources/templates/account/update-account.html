@@ -84,34 +84,3 @@
 
 </body>
 </html>
-
-<script>
-    const description = document.querySelector("#description");
-    const descriptionCounter = document.querySelector("#description-counter");
-
-    description.addEventListener("input", function() {
-        let len = description.value.length;
-
-        if(len >= 100) {
-            description.value = description.value.substring(0, 100);
-            len = 100;
-        }
-
-        if(len < 100) {
-            descriptionCounter.classList.remove("text-danger");
-            descriptionCounter.classList.add("text-secondary");
-        }
-        else {
-            descriptionCounter.classList.remove("text-secondary");
-            descriptionCounter.classList.add("text-danger");
-        }
-
-        descriptionCounter.innerHTML = `${len} / 100`;
-    });
-</script>
-
-<style>
-    textarea {
-        resize: vertical;
-    }
-</style>
