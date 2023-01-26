@@ -86,7 +86,7 @@ public class AccountController {
         model.addAttribute("changeableNickname", account.isChangeableNickname(nicknameChangeDays));
         model.addAttribute("nicknameChangeDays", nicknameChangeDays);
 
-        return "account/profile-update";
+        return "account/update-profile";
     }
 
     @PostMapping("/profile/{username}/update")
@@ -108,7 +108,7 @@ public class AccountController {
         if (errors.hasErrors()) {
             model.addAttribute(account);
 
-            return "account/profile-update";
+            return "account/update-profile";
         }
 
         accountService.updateUserInfo(account, updateForm);
