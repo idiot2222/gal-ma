@@ -146,6 +146,13 @@ public class AccountController {
         return "redirect:/profile/" + username;
     }
 
+    @PostMapping("/profile/{username}/config")
+    public String saveConfig(@PathVariable String username) {
+        return "redirect:/profile" + username;
+    }
+
+
+
 
     private void checkPrincipal(boolean username) {
         if (!username) {
