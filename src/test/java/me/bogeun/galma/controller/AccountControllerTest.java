@@ -1,5 +1,6 @@
 package me.bogeun.galma.controller;
 
+import me.bogeun.galma.entity.Account;
 import me.bogeun.galma.payload.SignUpForm;
 import me.bogeun.galma.service.AccountService;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,15 +31,17 @@ class AccountControllerTest {
     @Autowired
     AccountService accountService;
 
+    Account testAccount;
 
     @BeforeEach
     void beforeEach() {
         SignUpForm signUpForm = new SignUpForm();
+        signUpForm.setNickname("nickname");
         signUpForm.setUsername("username");
         signUpForm.setPassword("password123");
         signUpForm.setEmail("user@email.com");
 
-        accountService.signUp(signUpForm);
+        testAccount = accountService.signUp(signUpForm);
     }
 
 
@@ -48,13 +51,14 @@ class AccountControllerTest {
         mockMvc.perform(get("/sign-up"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("account/sign-up"))
-                .andExpect(model().attributeExists("signUpDto"));
+                .andExpect(model().attributeExists("signUpForm"));
     }
 
     @Test
     @DisplayName("POST 회원 가입 기능 - 성공")
     void postSignUpSuccess() throws Exception {
         mockMvc.perform(post("/sign-up").with(csrf())
+                        .param("nickname", "test_nickname")
                         .param("username", "test_username")
                         .param("password", "test_password")
                         .param("email", "test@email.com"))
