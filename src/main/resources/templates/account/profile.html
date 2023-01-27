@@ -8,14 +8,22 @@
     <div class="row mt-5 justify-content-center">
         <div class="col-6 bg-light radius px-3 py-2">
             <h1 class="display-6" th:text="${account.nickname}"></h1>
-            <p class="lead" th:unless="${#strings.isEmpty(account.description)}"
-               th:text="${account.description}"
-            ></p>
+            <div>
+                <p th:if="${isOwner || account.isPublicDescription}" class="lead" th:text="${account.description}"></p>
+                <p th:unless="${isOwner || account.isPublicDescription}" class="lead text-danger">사용자가 자기 소개를 공개하지 않습니다.</p>
+            </div>
             <div th:if="${#strings.isEmpty(account.description)}">
                 <a th:if="${isOwner}" th:href="@{/profile/{username}/update(username=${#authentication.principal.username})}" class="link-secondary">
                     <p class="lead">자기 소개를 추가해 주세요.</p>
                 </a>
-                <p th:unless="${isOwner}" class="lead text-secondary">자기 소개를 입력하지 않았습니다.</p>
+                <div th:unless="${isOwner}" >
+                    <p th:if="${account.isPublicDescription}" class="lead text-secondary">자기 소개를 입력하지 않았습니다.</p>
+                    <p th:unless="${account.isPublicDescription}" class="lead text-danger">사용자가 자기 소개를 공개하지 않습니다.</p>
+                </div>
+            </div>
+            <div th:if="${isOwner}" class="right my-4 px-3">
+                <small th:if="${account.isPublicDescription}" class="text-success">다른 사용자들에게 자기 소개가 공개됩니다.</small>
+                <small th:unless="${account.isPublicDescription}" class="text-danger">다른 사용자들에게 자기 소개가 공개되지 않습니다.</small>
             </div>
         </div>
         <div class="col-2 text-center">
@@ -31,19 +39,27 @@
                 <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel"
                      aria-labelledby="profile-tab" tabindex="0">
                     <ul class="my-4 px-3">
+                        <h1 class="fs-3 fw-semibold mb-3">회원 정보</h1>
                         <li class="row list-group-item info-item">
                             <i class="col-1 fa fa-address-card-o text-success"></i>
-                            <span class="col-9 mx-2" >
+                            <span class="col-9" >
                                 <span th:text="${account.username}"></span>
                             </span>
                         </li>
                         <li class="row list-group-item info-item">
                             <i class="col-1 fa fa-calendar-o text-success"></i>
-                            <span class="col-9 mx-2" th:text="${#temporals.format(account.joinedAt, 'yyyy년 MM월 dd일 가입')}"></span>
+                            <span class="col-9" th:text="${#temporals.format(account.joinedAt, 'yyyy년 MM월 dd일 가입')}"></span>
                         </li>
                         <li class="row list-group-item info-item">
-                            <i class="col-1 fa fa-envelope-o text-success"></i>
-                            <span class="col-9 mx-2" th:text="${account.email}"></span>
+                            <div th:if="${isOwner}">
+                                <i th:if="${account.isPublicEmail}" class="col-1 fa fa-envelope-o text-success"></i>
+                                <i th:unless="${account.isPublicEmail}" class="col-1 fa fa-envelope-o text-danger"></i>
+                                <span class="col-9" th:text="${account.email}"></span>
+                            </div>
+                            <div th:unless="${isOwner || account.isPublicEmail}">
+                                <i class="col-1 fa fa-envelope-o text-danger"></i>
+                                <span class="col-9"> - </span>
+                            </div>
                         </li>
                         <div th:if="${isOwner}" class="right my-4 px-3">
                             <small class="text-secondary">빨갛게 표시된 정보는 다른 회원들에게는 공개되지 않습니다.</small>
@@ -52,9 +68,43 @@
                 </div>
                 <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel"
                      aria-labelledby="config-tab" tabindex="0">
-                    <div class="my-4 px-3">
-                        babo
-                    </div>
+                    <form th:action="@{/profile/{username}/config(username=${#authentication.principal.username})}" method="post">
+                        <ul class="my-4 px-3">
+                            <h1 class="fs-3 fw-semibold mb-3">설정</h1>
+                            <li class="list-group-item info-item">
+                                <div class="row alert alert-light p-2 my-4" role="alert">
+                                <span class="col-1 my-auto">
+                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                </span>
+                                    <span class="col-10">
+                                    자기소개 공개 여부
+                                </span>
+                                    <span class="col-1 px-0 form-check form-switch">
+                                    <input name="isPublicDescription" th:checked="${account.isPublicDescription} ? 'checked' : null" class="form-check-input mx-0 pointer" type="checkbox" role="switch">
+                                </span>
+                                </div>
+                            </li>
+                            <li class="list-group-item info-item">
+                                <div class="row alert alert-light p-2 my-4" role="alert">
+                                <span class="col-1 my-auto">
+                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                </span>
+                                    <span class="col-10">
+                                    이메일 공개 여부
+                                </span>
+                                    <span class="col-1 px-0 form-check form-switch">
+                                    <input name="isPublicEmail" th:checked="${account.isPublicEmail} ? 'checked' : null" class="form-check-input mx-0 pointer" type="checkbox" role="switch">
+                                </span>
+                                </div>
+                            </li>
+                            <div th:if="${isOwner}" class="my-4 px-3 right">
+                                <small class="text-secondary">파랗게 체크가 된 경우 다른 사용자들에게 정보가 공개됩니다.</small>
+                            </div>
+                            <div class="mb-4">
+                                <input type="submit" class="btn btn-outline-primary" value="저장하기">
+                            </div>
+                        </ul>
+                    </form>
                 </div>
             </div>
         </div>

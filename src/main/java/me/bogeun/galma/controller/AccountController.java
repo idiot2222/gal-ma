@@ -15,10 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -147,8 +144,15 @@ public class AccountController {
     }
 
     @PostMapping("/profile/{username}/config")
-    public String saveConfig(@PathVariable String username) {
-        return "redirect:/profile" + username;
+    public String saveConfig(@PathVariable String username, @CurrentUser Account currentAccount,
+                             @RequestParam boolean isPublicEmail,
+                             @RequestParam boolean isPublicDescription) {
+
+        checkPrincipal(username.equals(currentAccount.getUsername()));
+
+        accountService.saveConfig(username, isPublicEmail, isPublicDescription);
+
+        return "redirect:/profile/" + username;
     }
 
 

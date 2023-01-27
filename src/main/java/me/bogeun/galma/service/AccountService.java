@@ -26,11 +26,14 @@ public class AccountService implements UserDetailsService {
 
     public Account signUp(SignUpForm signUpForm) {
         Account account = Account.builder()
+                .nickname(signUpForm.getNickname())
                 .username(signUpForm.getUsername())
                 .password(passwordEncoder.encode(signUpForm.getPassword()))
                 .email(signUpForm.getEmail())
                 .joinedAt(LocalDateTime.now())
                 .nicknameChangedAt(LocalDateTime.now())
+                .isPublicDescription(true)
+                .isPublicEmail(true)
                 .build();
 
         return accountRepository.save(account);
@@ -60,5 +63,12 @@ public class AccountService implements UserDetailsService {
 
     public void updatePassword(Account account, String newPassword) {
         account.setPassword(passwordEncoder.encode(newPassword));
+    }
+
+    public void saveConfig(String username, boolean isPublicEmail, boolean isPublicDescription) {
+        Account account = getAccountByUsername(username);
+
+        account.setPublicEmail(isPublicEmail);
+        account.setPublicDescription(isPublicDescription);
     }
 }

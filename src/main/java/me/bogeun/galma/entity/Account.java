@@ -41,9 +41,13 @@ public class Account {
     @Column(length = 100)
     private String description;
 
+    private boolean isPublicEmail;
+
+    private boolean isPublicDescription;
+
 
     @Builder
-    public Account(String username, String nickname, String password, String email, LocalDateTime joinedAt, LocalDateTime nicknameChangedAt, String image, String description) {
+    public Account(String username, String nickname, String password, String email, LocalDateTime joinedAt, LocalDateTime nicknameChangedAt, String image, String description, boolean isPublicEmail, boolean isPublicDescription) {
         this.username = username;
         this.nickname = nickname;
         this.password = password;
@@ -52,6 +56,8 @@ public class Account {
         this.nicknameChangedAt = nicknameChangedAt;
         this.image = image;
         this.description = description;
+        this.isPublicEmail = isPublicEmail;
+        this.isPublicDescription = isPublicDescription;
     }
 
 
