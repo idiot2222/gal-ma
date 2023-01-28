@@ -13,7 +13,4 @@ public enum BoardTopic {
         return korean;
     }
 
-    public String koreanValueOf(String topic) {
-        return valueOf(topic).getKorean();
-    }
 }

@@ -23,15 +23,14 @@ public class BoardController {
 
     @GetMapping("/{topic}")
     public String getBoard(@PathVariable String topic, Model model) {
-        model.addAttribute("topic", topic);
+        model.addAttribute("topic", BoardTopic.valueOf(topic.toUpperCase(Locale.ROOT)).getKorean());
 
         return "board/board-main";
     }
 
     @GetMapping("/{topic}/post/create")
     public String getPostCreate(@PathVariable String topic, Model model) {
-        model.addAttribute("boardTopic", BoardTopic.BASEBALL.koreanValueOf(topic.toUpperCase(Locale.ROOT)
-        ));
+        model.addAttribute("boardTopic", BoardTopic.valueOf(topic.toUpperCase(Locale.ROOT)).getKorean());
         model.addAttribute(new PostCreateForm());
 
         return "board/post-create";
