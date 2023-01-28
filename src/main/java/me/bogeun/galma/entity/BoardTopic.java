@@ -1,7 +1,7 @@
 package me.bogeun.galma.entity;
 
 public enum BoardTopic {
-    BASEBALL("야구"), INFO("정보"), HUMOR("유머"), FEAR("공포");
+    BASEBALL("야구"), INFO("정보"), HUMOR("유머"), HORROR("공포");
 
     final String korean;
 
