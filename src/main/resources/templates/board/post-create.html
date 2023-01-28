@@ -1,0 +1,40 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+<div class="row justify-content-center mt-5">
+    <div class="col-6">
+        <h1 class="display-6">글 작성</h1>
+        <hr/>
+        <form th:action="@{/board/{topic}/post/create(topic=${topic})}" method="post"
+              class="container" th:object="${postCreateForm}">
+            <div class="row justify-content-center fs-5 mt-5">
+                <div class="col-1">
+                    <label class="form-label" style="min-width: 50px">제목 :</label>
+                </div>
+                <div class="col-7">
+                    <input class="form-control" th:field="*{title}" type="text"
+                        placeholder="글 제목을 입력해주세요.">
+                </div>
+                <div class="col-2">
+                    <input class="form-control text-center" th:value="${boardTopic}" disabled>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-2">
+                <div class="col-10">
+                    <textarea class="form-control" style="resize: none" th:field="*{content}" rows="10"></textarea>
+                </div>
+            </div>
+            <div class="mt-5 right">
+                <button type="submit" class="btn btn-outline-primary">
+                    확인
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
