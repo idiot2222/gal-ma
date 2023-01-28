@@ -1,0 +1,35 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+<div class="row justify-content-center mt-3">
+    <div class="col-8">
+        <h1 class="display-5" th:text="${boardTopic.getKorean()} + ' 게시판'"></h1>
+        <hr/>
+        <div class="container">
+            <div class="list-group">
+                <div class="list-group-item bg-dark-subtle">
+                    <div class="row">
+                        <span class="col-2">글 번호</span>
+                        <span class="col-6">제목</span>
+                        <span class="col-2">작성일</span>
+                        <span class="col-2">작성자</span>
+                    </div>
+                </div>
+                <a th:each="post : ${posts}" th:href="@{/board/post/{postId}(postId=${post.id})}" class="list-group-item list-group-item-action">
+                    <div class="row">
+                        <span class="col-2" th:text="${post.id}"></span>
+                        <span class="col-6" th:text="${post.title}"></span>
+                        <span class="col-2" th:text="${#temporals.format(post.wroteAt, 'yyyy-MM-dd')}"></span>
+                        <span class="col-2" th:text="${post.writer.username}"></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

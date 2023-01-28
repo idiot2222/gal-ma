@@ -1,5 +1,7 @@
 package me.bogeun.galma.entity;
 
+import java.util.Locale;
+
 public enum BoardTopic {
     BASEBALL("야구"), INFO("정보"), HUMOR("유머"), HORROR("공포");
 
@@ -11,6 +13,10 @@ public enum BoardTopic {
 
     public String getKorean() {
         return korean;
+    }
+
+    public static BoardTopic toEnumType(String boardTopic) {
+        return valueOf(boardTopic.toUpperCase(Locale.ROOT));
     }
 
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Locale;
 
 @RequiredArgsConstructor
@@ -30,5 +31,9 @@ public class PostService {
                 .build();
 
         postRepository.save(post);
+    }
+
+    public List<Post> getPostsByTopic(String topic) {
+        return postRepository.findAllByBoardTopic(BoardTopic.toEnumType(topic));
     }
 }

@@ -3,6 +3,7 @@ package me.bogeun.galma.controller;
 import lombok.RequiredArgsConstructor;
 import me.bogeun.galma.entity.Account;
 import me.bogeun.galma.entity.BoardTopic;
+import me.bogeun.galma.entity.Post;
 import me.bogeun.galma.payload.PostCreateForm;
 import me.bogeun.galma.service.PostService;
 import me.bogeun.galma.utils.CurrentUser;
@@ -12,7 +13,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Locale;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -23,14 +24,17 @@ public class BoardController {
 
     @GetMapping("/{topic}")
     public String getBoard(@PathVariable String topic, Model model) {
-        model.addAttribute("topic", BoardTopic.valueOf(topic.toUpperCase(Locale.ROOT)).getKorean());
+        List<Post> posts = postService.getPostsByTopic(topic);
+
+        model.addAttribute("boardTopic", BoardTopic.toEnumType(topic));
+        model.addAttribute("posts", posts);
 
         return "board/board-main";
     }
 
     @GetMapping("/{topic}/post/create")
     public String getPostCreate(@PathVariable String topic, Model model) {
-        model.addAttribute("boardTopic", BoardTopic.valueOf(topic.toUpperCase(Locale.ROOT)).getKorean());
+        model.addAttribute("boardTopic", BoardTopic.toEnumType(topic));
         model.addAttribute(new PostCreateForm());
 
         return "board/post-create";
@@ -47,6 +51,11 @@ public class BoardController {
         postService.createNewPost(currentAccount, topic, postCreateForm);
 
         return "redirect:/board/" + topic;
+    }
+
+    @GetMapping("/post/{postId}")
+    public String getPost(@PathVariable Long postId) {
+        return "board/post";
     }
 
 }
