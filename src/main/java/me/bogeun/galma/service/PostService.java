@@ -8,6 +8,7 @@ import me.bogeun.galma.payload.PostCreateForm;
 import me.bogeun.galma.repository.PostRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +39,7 @@ public class PostService {
     }
 
     public List<Post> getPostsByTopic(String topic, int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber-1, PAGE_COUNT);
+        Pageable pageable = PageRequest.of(pageNumber-1, PAGE_COUNT, Sort.by(Sort.Direction.DESC, "wroteAt"));
 
         return postRepository.findAllByBoardTopic(BoardTopic.toEnumType(topic), pageable).getContent();
     }
@@ -54,5 +55,9 @@ public class PostService {
         }
 
         return count / PAGE_COUNT + (count % PAGE_COUNT > 0 ? 1 : 0);
+    }
+
+    public void addViews(Post post, int views) {
+        post.addViews(views);
     }
 }
