@@ -34,18 +34,26 @@ public class Post {
 
     private LocalDateTime modifiedAt;
 
+    private int views;
+
     @JoinColumn(name = "account_id", nullable = false, updatable = false)
     @OneToOne
     private Account writer;
 
     @Builder
-    public Post(Long id, String title, String content, BoardTopic boardTopic, LocalDateTime wroteAt, LocalDateTime modifiedAt, Account writer) {
-        this.id = id;
+    public Post(String title, String content, BoardTopic boardTopic, LocalDateTime wroteAt, LocalDateTime modifiedAt, int views, Account writer) {
         this.title = title;
         this.content = content;
         this.boardTopic = boardTopic;
         this.wroteAt = wroteAt;
         this.modifiedAt = modifiedAt;
+        this.views = views;
         this.writer = writer;
+    }
+
+
+
+    public void addViews(int views) {
+        this.views += views;
     }
 }

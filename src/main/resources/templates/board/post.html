@@ -20,7 +20,12 @@
                 <i class="fa fa-pencil" aria-hidden="true"></i>
                 <span th:text="${#temporals.format(post.wroteAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></span>
             </div>
-        </div><br/><br/>
+            <div>
+                <i class="fa fa-eye" aria-hidden="true"></i>
+                <span th:text="${post.views} + ' views'"></span>
+            </div>
+        </div>
+        <br/><br/><br/>
         <div class="container my-5">
             <p class="lead" th:text="${post.content}"></p>
         </div><br/><br/>

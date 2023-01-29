@@ -60,6 +60,7 @@ public class BoardController {
     @GetMapping("/post/{postId}")
     public String getPost(@PathVariable Long postId, Model model) {
         Post post = postService.getPostById(postId);
+        postService.addViews(post, 1);
 
         model.addAttribute(post);
 
