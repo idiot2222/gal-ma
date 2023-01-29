@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue
     private Long id;
 
     @Column(nullable = false)
@@ -39,7 +39,6 @@ public class Post {
     private Account writer;
 
     @Builder
-
     public Post(Long id, String title, String content, BoardTopic boardTopic, LocalDateTime wroteAt, LocalDateTime modifiedAt, Account writer) {
         this.id = id;
         this.title = title;

@@ -4,6 +4,29 @@
 <body>
 <nav th:replace="fragments :: navbar"></nav>
 
+<div class="row justify-content-center mt-3">
+    <div class="col-7">
+        <div class="mt-5">
+            <span class="display-6" th:text="${post.title}"></span>
+            <span class="right" th:text="${post.boardTopic.getKorean() + ' 게시판'}"></span>
+        </div>
+        <hr/>
+        <div class="right">
+            <div>
+                <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                <span th:text="${post.writer.nickname}"></span>
+            </div>
+            <div>
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+                <span th:text="${#temporals.format(post.wroteAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></span>
+            </div>
+        </div><br/><br/>
+        <div class="container my-5">
+            <p class="lead" th:text="${post.content}"></p>
+        </div><br/><br/>
+        <hr/>
+    </div>
+</div>
 
 </body>
 </html>

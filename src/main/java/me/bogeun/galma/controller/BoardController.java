@@ -22,12 +22,16 @@ public class BoardController {
 
     private final PostService postService;
 
-    @GetMapping("/{topic}")
-    public String getBoard(@PathVariable String topic, Model model) {
-        List<Post> posts = postService.getPostsByTopic(topic);
+    @GetMapping("/{topic}/{pageNumber}")
+    public String getBoard(@PathVariable String topic, Model model,
+                           @PathVariable int pageNumber) {
+
+        List<Post> posts = postService.getPostsByTopic(topic, pageNumber);
+        int maxPageNumber = postService.getMaxPageNumber(topic);
 
         model.addAttribute("boardTopic", BoardTopic.toEnumType(topic));
         model.addAttribute("posts", posts);
+        model.addAttribute("maxPageNumber", maxPageNumber);
 
         return "board/board-main";
     }
@@ -50,11 +54,15 @@ public class BoardController {
 
         postService.createNewPost(currentAccount, topic, postCreateForm);
 
-        return "redirect:/board/" + topic;
+        return "redirect:/board/" + topic + "/1";
     }
 
     @GetMapping("/post/{postId}")
-    public String getPost(@PathVariable Long postId) {
+    public String getPost(@PathVariable Long postId, Model model) {
+        Post post = postService.getPostById(postId);
+
+        model.addAttribute(post);
+
         return "board/post";
     }
 
