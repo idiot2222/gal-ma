@@ -1,0 +1,25 @@
+server:
+  port: 8000
+  error:
+    whitelabel:
+      enabled: false
+
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp:localhost/~/gal-ma
+    username: sa
+    password: 1
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  mvc:
+    throw-exception-if-no-handler-found: true
+
+  web:
+    resources:
+      add-mappings: false
+
+config:
+  nickname-change-days: 0
