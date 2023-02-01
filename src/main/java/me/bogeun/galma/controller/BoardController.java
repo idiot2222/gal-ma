@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import me.bogeun.galma.entity.Account;
 import me.bogeun.galma.entity.BoardTopic;
 import me.bogeun.galma.entity.Post;
+import me.bogeun.galma.entity.Reply;
 import me.bogeun.galma.payload.PostCreateForm;
 import me.bogeun.galma.service.PostService;
+import me.bogeun.galma.service.ReplyService;
 import me.bogeun.galma.utils.CurrentUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,8 @@ import java.util.List;
 public class BoardController {
 
     private final PostService postService;
+    private final ReplyService replyService;
+
 
     @GetMapping("/{topic}/{pageNumber}")
     public String getBoard(@PathVariable String topic, Model model,
@@ -60,9 +64,12 @@ public class BoardController {
     @GetMapping("/post/{postId}")
     public String getPost(@PathVariable Long postId, Model model) {
         Post post = postService.getPostById(postId);
+        List<Reply> replies = replyService.getRepliesByPost(post);
+
         postService.addViews(post, 1);
 
         model.addAttribute(post);
+        model.addAttribute("replies", replies);
 
         return "board/post";
     }

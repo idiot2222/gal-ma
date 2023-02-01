@@ -18,7 +18,7 @@
             </div>
             <div>
                 <i class="fa fa-pencil" aria-hidden="true"></i>
-                <span th:text="${#temporals.format(post.wroteAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></span>
+                <span th:text="${#temporals.format(post.wroteAt, 'yyyy/MM/dd HH:mm')}"></span>
             </div>
             <div>
                 <i class="fa fa-eye" aria-hidden="true"></i>
@@ -30,6 +30,34 @@
             <p class="lead" th:text="${post.content}"></p>
         </div><br/><br/>
         <hr/>
+        <div class="container mt-3">
+            <ul class="list-group list-group-flush">
+                <li th:each="reply: ${replies}" class="list-group-item fs-6">
+                    <div class="row">
+                        <div class="col-2 fw-semibold">
+                            <span th:text="${reply.account.nickname}"></span>
+                        </div>
+                        <div class="col-9">
+                            <span th:text="${reply.content}"></span>
+                        </div>
+                        <div class="col-1">
+                            <span th:if="${#authentication.principal.username == reply.account.username}">
+                                X
+                            </span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <form th:action="@{/reply/create/{postId}(postId=${post.id})}"
+              class="row justify-content-center mt-3" method="post" id="reply-form">
+            <div class="col-10">
+                <textarea class="form-control" name="reply" style="resize: none; height: 80px" required></textarea>
+            </div>
+            <div class="col-1">
+                <input class="btn btn-outline-primary" type="submit" value="등록" style="height: 80px">
+            </div>
+        </form>
     </div>
 </div>
 
