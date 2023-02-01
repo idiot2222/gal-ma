@@ -41,9 +41,10 @@
                             <span th:text="${reply.content}"></span>
                         </div>
                         <div class="col-1">
-                            <span th:if="${#authentication.principal.username == reply.account.username}">
-                                X
-                            </span>
+                            <form th:if="${#authentication.principal.username == reply.account.username}" method="post"
+                                th:action="@{/reply/delete/{postId}/{replyId}(postId=${post.id}, replyId=${reply.id})}">
+                                <button class="btn btn-link p-0 m-0 text-danger" style="text-decoration: none">X</button>
+                            </form>
                         </div>
                     </div>
                 </li>
@@ -60,6 +61,22 @@
         </form>
     </div>
 </div>
+
+<script>
+    function deleteReply() {
+        const xhr = new XMLHttpRequest();
+
+
+        xhr.open("POST", `/reply/delete/${postId}/${replyId}`, true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                console.log("Successful POST request");
+            }
+        };
+        xhr.send("requestData=yourData");
+    }
+</script>
 
 </body>
 </html>
