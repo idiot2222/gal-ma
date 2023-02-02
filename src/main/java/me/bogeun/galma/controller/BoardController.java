@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -62,11 +63,14 @@ public class BoardController {
     }
 
     @GetMapping("/post/{postId}")
-    public String getPost(@PathVariable Long postId, Model model) {
+    public String getPost(HttpServletRequest request,
+                          @PathVariable Long postId, Model model) {
         Post post = postService.getPostById(postId);
         List<Reply> replies = replyService.getRepliesByPost(post);
 
-        postService.addViews(post, 1);
+        if (!request.getHeader("Referer").equals(request.getRequestURL().toString())) {
+            postService.addViews(post, 1);
+        }
 
         model.addAttribute(post);
         model.addAttribute("replies", replies);
