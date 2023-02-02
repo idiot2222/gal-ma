@@ -42,7 +42,8 @@
                         </div>
                         <div class="col-1">
                             <form th:if="${#authentication.principal.username == reply.account.username}" method="post"
-                                th:action="@{/reply/delete/{postId}/{replyId}(postId=${post.id}, replyId=${reply.id})}">
+                                th:action="@{/reply/delete/{postId}/{replyId}(postId=${post.id}, replyId=${reply.id})}"
+                                class="m-0">
                                 <button class="btn btn-link p-0 m-0 text-danger" style="text-decoration: none">X</button>
                             </form>
                         </div>
