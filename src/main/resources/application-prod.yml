@@ -7,7 +7,7 @@ server:
 spring:
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:tcp:localhost/~/gal-ma
+    url: ${{ secrets.RDS_URL }}
     username: sa
     password: 1
   jpa:
