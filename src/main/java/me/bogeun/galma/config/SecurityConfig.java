@@ -28,7 +28,8 @@ public class SecurityConfig {
                 .anyRequest().authenticated();
 
         http.formLogin()
-                .loginPage("/login");
+                .loginPage("/login")
+                .defaultSuccessUrl("/");
 
         http.logout()
                 .logoutUrl("/logout")

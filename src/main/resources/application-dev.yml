@@ -6,13 +6,17 @@ server:
 
 spring:
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:tcp:localhost/~/gal-ma
-    username: sa
-    password: 1
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/galma?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: qpzja528
   jpa:
     hibernate:
       ddl-auto: update
+    generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
 
   mvc:
     throw-exception-if-no-handler-found: true

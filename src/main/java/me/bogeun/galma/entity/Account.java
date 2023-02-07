@@ -41,8 +41,10 @@ public class Account {
     @Column(length = 100)
     private String description;
 
+    @Column(nullable = false, columnDefinition = "TINYINT", length=1)
     private boolean isPublicEmail;
 
+    @Column(nullable = false, columnDefinition = "TINYINT", length=1)
     private boolean isPublicDescription;
 
 

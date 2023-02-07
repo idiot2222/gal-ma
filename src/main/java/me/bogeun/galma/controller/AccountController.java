@@ -145,8 +145,8 @@ public class AccountController {
 
     @PostMapping("/profile/{username}/config")
     public String saveConfig(@PathVariable String username, @CurrentUser Account currentAccount,
-                             @RequestParam boolean isPublicEmail,
-                             @RequestParam boolean isPublicDescription) {
+                             @RequestParam(required = false) boolean isPublicEmail,
+                             @RequestParam(required = false) boolean isPublicDescription) {
 
         checkPrincipal(username.equals(currentAccount.getUsername()));
 
