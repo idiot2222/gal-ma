@@ -7,7 +7,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://{{ RDS_URL }}/galma
+    url: jdbc:mysql://{{ RDS_URL }}:3306/galma
     username: {{ RDS_USERNAME }}
     password: {{ RDS_PASSWORD }}
   jpa:
