@@ -7,9 +7,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: $RDS_URL
-    username: $RDS_USERNAME
-    password: $RDS_PASSWORD
+    url: ${env.RDS_URL}
+    username: ${env.RDS_USERNAME}}
+    password: ${env.RDS_PASSWORD}}
   jpa:
     hibernate:
       ddl-auto: update
