@@ -8,8 +8,8 @@ spring:
   datasource:
     driver-class-name: org.h2.Driver
     url: ${{ secrets.RDS_URL }}
-    username: sa
-    password: 1
+    username: ${{ secrets.RDS_USERNAME }}
+    password: ${{ secrets.RDS_PASSWORD }}
   jpa:
     hibernate:
       ddl-auto: update
