@@ -21,4 +21,7 @@ public class WeatherDto {
         dataMap.put(category, value);
     }
 
+    public String getValue(String category) {
+        return dataMap.get(WeatherCategory.valueOf(category));
+    }
 }

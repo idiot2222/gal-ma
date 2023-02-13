@@ -3,7 +3,7 @@ package me.bogeun.galma.payload;
 import lombok.Getter;
 
 @Getter
-public enum StadiumInfo {
+public enum Stadium {
     SJ("사직", 98, 76),
     JS("잠실", 59,126),
     MH("문학", 55,124),
@@ -14,11 +14,11 @@ public enum StadiumInfo {
     GC("고척", 99,75),
     SW("수원", 60,121);
 
-    private String name;
-    private int coordinateX;
-    private int coordinateY;
+    private final String name;
+    private final int coordinateX;
+    private final int coordinateY;
 
-    StadiumInfo(String name, int coordinateX, int coordinateY) {
+    Stadium(String name, int coordinateX, int coordinateY) {
         this.name = name;
         this.coordinateX = coordinateX;
         this.coordinateY = coordinateY;

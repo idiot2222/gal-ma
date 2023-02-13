@@ -1,0 +1,87 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+
+<body>
+<nav th:replace="fragments :: navbar"></nav>
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-6">
+            <div class="bg-light radius px-3 py-2">
+                <div class="mb-3">
+                    <span class="fs-5">경기</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="bg-light radius px-3 py-2">
+                <div class="mb-3">
+                    <span class="fs-5">현재 날씨</span>
+                    <span class="fs-6 right" th:text="${#dates.format(#dates.createNow(), 'yyyy/MM/dd(EE) HH:mm')}"></span>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div>
+                            <img th:src="@{/images/SKY_{value}.jpg(value=${nowWeather.getValue('SKY')})}" width="100" height="100" alt="하늘"/>
+                        </div>
+                        <div>기온 : <span th:text="${nowWeather.getValue('TMP')}"></span>°C</div>
+                    </div>
+                    <div class="col-4">
+                        <div>
+                            <img src="/images/WND.jpg" width="100" height="100" alt="풍속"/>
+                        </div>
+                        <div>풍속 : <span th:text="${nowWeather.getValue('WSD')}"></span>m/s</div>
+                    </div>
+                    <div class="col-4">
+                        <div>
+                            <img th:src="@{/images/PTY_{value}.jpg(value=${nowWeather.getValue('PTY')})}" width="100" height="100" alt="강수 타입"/>
+                        </div>
+                        <div>
+                            강수 확률 : <span th:text="${nowWeather.getValue('POP')}"></span>%
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-light radius px-3 py-2 mt-4">
+                <div class="mb-3">
+                    <span class="fs-5">경기 예정 시각 날씨</span>
+                    <span class="fs-6 right" th:text="${#temporals.format(match.matchDateTime, 'yyyy/MM/dd(EE) HH:mm')}"></span>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div>
+                            <img th:src="@{/images/SKY_{value}.jpg(value=${matchWeather.getValue('SKY')})}" width="100" height="100" alt="하늘"/>
+                        </div>
+                        <div>기온 : <span th:text="${matchWeather.getValue('TMP')}"></span>°C</div>
+                    </div>
+                    <div class="col-4">
+                        <div>
+                            <img src="/images/WND.jpg" width="100" height="100" alt="풍속"/>
+                        </div>
+                        <div>풍속 : <span th:text="${matchWeather.getValue('WSD')}"></span>m/s</div>
+                    </div>
+                    <div class="col-4">
+                        <div>
+                            <img th:src="@{/images/PTY_{value}.jpg(value=${matchWeather.getValue('PTY')})}" width="100" height="100" alt="강수 타입"/>
+                        </div>
+                        <div>
+                            강수 확률 : <span th:text="${matchWeather.getValue('POP')}"></span>%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+<style>
+    .weather-box {
+        width: 100px;
+        height: 100px;
+        background-color: black;
+        display: inline-block;
+    }
+</style>
