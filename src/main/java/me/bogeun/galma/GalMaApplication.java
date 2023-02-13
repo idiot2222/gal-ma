@@ -10,4 +10,5 @@ public class GalMaApplication {
         SpringApplication.run(GalMaApplication.class, args);
     }
 
+
 }
