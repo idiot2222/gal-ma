@@ -1,6 +1,6 @@
 package me.bogeun.galma.utils;
 
-import me.bogeun.galma.payload.StadiumInfo;
+import me.bogeun.galma.payload.Stadium;
 import me.bogeun.galma.payload.WeatherCategory;
 import me.bogeun.galma.payload.WeatherDto;
 import org.json.simple.JSONArray;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -33,19 +32,30 @@ public class WeatherDataSetting {
     @Value("${api.weather.uri}")
     private String weatherUri;
 
-    private final String baseTime = "0200";
+    private final String BASE_TIME = "0200";
 
-    public List<WeatherDto> getWeather(StadiumInfo stadium) throws IOException, ParseException {
-        URL url = getUrl(stadium);
-        URLConnection urlConnection = url.openConnection();
-        String json = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), StandardCharsets.UTF_8)).readLine();
+    public List<WeatherDto> getWeather(Stadium stadium) {
+        String json;
+
+        try {
+            URL url = getUrl(stadium);
+            URLConnection urlConnection = url.openConnection();
+            json = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), StandardCharsets.UTF_8)).readLine();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("external api error.");
+        }
 
         return convertJsonToWeatherDto(json);
     }
 
-    private List<WeatherDto> convertJsonToWeatherDto(String json) throws ParseException {
+    private List<WeatherDto> convertJsonToWeatherDto(String json) {
         JSONParser jsonParser = new JSONParser();
-        JSONObject jsonObject = (JSONObject) jsonParser.parse(json);
+        JSONObject jsonObject;
+        try {
+            jsonObject = (JSONObject) jsonParser.parse(json);
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("json parse error.");
+        }
 
         JSONObject response = (JSONObject) jsonObject.get("response");
         JSONObject body = (JSONObject) response.get("body");
@@ -92,7 +102,7 @@ public class WeatherDataSetting {
                 .collect(Collectors.toList());
     }
 
-    private URL getUrl(StadiumInfo stadiumInfo) throws MalformedURLException {
+    private URL getUrl(Stadium stadium) throws MalformedURLException {
         StringBuilder sb = new StringBuilder(weatherUri);
         LocalDateTime now = LocalDateTime.now();
 
@@ -101,9 +111,9 @@ public class WeatherDataSetting {
         sb.append("&numOfRows=").append(254); // 당일 0300 ~ 2300 시간대의 데이터 개수
         sb.append("&dataType=").append("JSON");
         sb.append("&base_date=").append(now.format(DateTimeFormatter.BASIC_ISO_DATE));
-        sb.append("&base_time=").append(baseTime);
-        sb.append("&nx=").append(stadiumInfo.getCoordinateX());
-        sb.append("&ny=").append(stadiumInfo.getCoordinateY());
+        sb.append("&base_time=").append(BASE_TIME);
+        sb.append("&nx=").append(stadium.getCoordinateX());
+        sb.append("&ny=").append(stadium.getCoordinateY());
 
         return new URL(sb.toString());
     }
