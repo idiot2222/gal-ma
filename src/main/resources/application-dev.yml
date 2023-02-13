@@ -7,7 +7,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/galma?characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/galma?characterEncoding=UTF-8
     username: root
     password: qpzja528
   jpa:
@@ -17,6 +17,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+  config:
+    import: optional:classpath:env.properties
 
   mvc:
     throw-exception-if-no-handler-found: true
@@ -27,3 +29,8 @@ spring:
 
 config:
   nickname-change-days: 0
+
+api:
+  weather:
+    uri: ${env.api.uri}
+    key: ${env.api.key}
