@@ -34,3 +34,7 @@ api:
   weather:
     uri: ${env.api.uri}
     key: ${env.api.key}
+
+cache:
+  weather:
+    expiration: 21600

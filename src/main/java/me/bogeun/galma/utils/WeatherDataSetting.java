@@ -1,9 +1,11 @@
 package me.bogeun.galma.utils;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.bogeun.galma.payload.Stadium;
 import me.bogeun.galma.payload.WeatherCategory;
 import me.bogeun.galma.payload.WeatherDto;
+import net.spy.memcached.MemcachedClient;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -25,8 +27,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
+@RequiredArgsConstructor
 @Component
 public class WeatherDataSetting {
+
+    private final MemcachedClient memcachedClient;
 
     @Value("${api.weather.key}")
     private String weatherKey;
@@ -36,7 +41,23 @@ public class WeatherDataSetting {
 
     private final String BASE_TIME = "0200";
 
+    private final String WEATHER_CACHE_KEY = "weather";
+
+    @Value("${cache.weather.expiration}")
+    private int weatherExp;
+
+
     public List<WeatherDto> getWeather(Stadium stadium) {
+        String json = (String) memcachedClient.get(WEATHER_CACHE_KEY);
+
+        if(json == null) {
+            json = getDataFromExternalAPI(stadium);
+        }
+
+        return convertJsonToWeatherDto(json);
+    }
+
+    private String getDataFromExternalAPI(Stadium stadium) {
         String json;
 
         try {
@@ -50,7 +71,9 @@ public class WeatherDataSetting {
             throw new IllegalArgumentException("external api error.");
         }
 
-        return convertJsonToWeatherDto(json);
+        memcachedClient.set(WEATHER_CACHE_KEY, weatherExp, json);
+
+        return json;
     }
 
     private List<WeatherDto> convertJsonToWeatherDto(String json) {

@@ -32,3 +32,7 @@ api:
   weather:
     uri: API_URL
     key: API_KEY
+
+cache:
+  weather:
+    expiration: 10800
