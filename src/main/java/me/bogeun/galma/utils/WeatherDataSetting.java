@@ -113,7 +113,7 @@ public class WeatherDataSetting {
 
         sb.append("?serviceKey=").append(weatherKey);
         sb.append("&pageNo=").append(1);
-        sb.append("&numOfRows=").append(254); // 당일 0300 ~ 2300 시간대의 데이터 개수
+        sb.append("&numOfRows=").append(290); // 당일 0300 ~ 2500 시간대의 데이터 개수
         sb.append("&dataType=").append("JSON");
         sb.append("&base_date=").append(now.format(DateTimeFormatter.BASIC_ISO_DATE));
         sb.append("&base_time=").append(BASE_TIME);

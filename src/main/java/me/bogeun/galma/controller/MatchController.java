@@ -26,12 +26,25 @@ public class MatchController {
         Match match = matchService.getTodayMatch();
         List<WeatherDto> weather = weatherDataSetting.getWeather(match.getMatchStadium());
 
+        int matchWeatherIdx = getWeatherIdx(match.getMatchDateTime().getHour());
+        int nowWeatherIdx = getWeatherIdx(LocalDateTime.now().getHour());
+
         model.addAttribute(match);
-        model.addAttribute("matchWeather", weather.get(match.getMatchDateTime().getHour() - 3));
-        model.addAttribute("nowWeather", weather.get(LocalDateTime.now().getHour() - 3));
+        model.addAttribute("matchWeather", weather.get(matchWeatherIdx));
+        model.addAttribute("nowWeather", weather.get(nowWeatherIdx));
 
 
         return "match/match-today";
+    }
+
+    private int getWeatherIdx(int hour) {
+        int temp = hour - 3;
+
+        if(temp < 0) {
+            temp += 24;
+        }
+
+        return temp;
     }
 
 }

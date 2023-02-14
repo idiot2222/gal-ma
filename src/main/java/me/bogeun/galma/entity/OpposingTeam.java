@@ -1,7 +1,9 @@
 package me.bogeun.galma.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
 public enum OpposingTeam {
     DOO("두산", "두산 베어스"), SSG("SSG", "SSG 랜더스"), KT("KT", "KT 위즈"),

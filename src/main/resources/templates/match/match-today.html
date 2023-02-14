@@ -8,15 +8,46 @@
     <div class="row justify-content-center mt-5">
         <div class="col-6">
             <div class="bg-light radius px-3 py-2">
-                <div class="mb-3">
-                    <span class="fs-5">경기</span>
+                <div class="fs-5">경기</div>
+                <div th:if="${match.id != null}">
+                    <div class="row justify-content-center my-3">
+                        <div class="col-5">
+                            <img th:if="${match.matchStadium == 'SJ'}" src="/images/logos/LOT.jpg" alt="우리팀" class="team-logo"/>
+                            <img th:unless="${match.matchStadium == 'SJ'}" th:src="@{/images/logos/{team}.jpg(team=${match.opposingTeam})}" alt="상대팀" class="team-logo"/>
+                            <h1 class="fs-6 text-center">HOME</h1>
+                            <div th:if="${match.matchStadium == 'SJ'}" class="fs-6 text-center text-success">롯데 자이언츠</div>
+                            <div th:unless="${match.matchStadium == 'SJ'}" class="fs-6 text-center" th:text="${match.opposingTeam.getFullName()}"></div>
+                        </div>
+                        <div class="col-1 my-auto">
+                            VS
+                        </div>
+                        <div class="col-5">
+                            <img th:if="${match.matchStadium == 'SJ'}" th:src="@{/images/logos/{team}.jpg(team=${match.opposingTeam})}" alt="상대팀" class="team-logo"/>
+                            <img th:unless="${match.matchStadium == 'SJ'}" src="/images/logos/LOT.jpg" alt="우리팀" class="team-logo"/>
+                            <h1 class="fs-6 text-center">AWAY</h1>
+                            <div th:if="${match.matchStadium == 'SJ'}" class="fs-6 text-center" th:text="${match.opposingTeam.getFullName()}"></div>
+                            <div th:unless="${match.matchStadium == 'SJ'}" class="fs-6 text-center text-success">롯데 자이언츠</div>
+                        </div>
+                    </div>
+                    <div class="text-center mb-3">
+                        <div class="fs-4" th:text="${match.matchStadium.getFullName()}"></div>
+                        <div class="fs-5" th:text="${#temporals.format(match.matchDateTime, 'HH시 mm분')}"></div>
+                    </div>
+                </div>
+                <div th:unless="${match.id != null}">
+                    <div class="row justify-content-center mb-3">
+                        <div class="col-6">
+                            <img src="/images/logos/LOT.jpg" alt="우리팀" class="team-logo"/>
+                        </div>
+                    </div>
+                    <div class="fs-4 mb-3 text-center">오늘 경기 없음</div>
                 </div>
             </div>
         </div>
         <div class="col-4">
             <div class="bg-light radius px-3 py-2">
                 <div class="mb-3">
-                    <span class="fs-5">현재 날씨</span>
+                    <span class="fs-5" th:text="${match.matchStadium.getShortName()} +'의 현재 날씨'"></span>
                     <span class="fs-6 right" th:text="${#dates.format(#dates.createNow(), 'yyyy/MM/dd(EE) HH:mm')}"></span>
                 </div>
                 <div class="row">
@@ -76,3 +107,10 @@
 
 </body>
 </html>
+
+<style>
+    .team-logo {
+        width: 100%;
+        border-radius: 15px;
+    }
+</style>
