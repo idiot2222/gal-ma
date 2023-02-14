@@ -1,5 +1,6 @@
 package me.bogeun.galma.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import me.bogeun.galma.payload.Stadium;
 import me.bogeun.galma.payload.WeatherCategory;
 import me.bogeun.galma.payload.WeatherDto;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 public class WeatherDataSetting {
 
@@ -40,6 +42,9 @@ public class WeatherDataSetting {
         try {
             URL url = getUrl(stadium);
             URLConnection urlConnection = url.openConnection();
+
+            log.info("외부 API 요청 시도 : {}", url);
+
             json = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), StandardCharsets.UTF_8)).readLine();
         } catch (Exception e) {
             throw new IllegalArgumentException("external api error.");
