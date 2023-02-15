@@ -12,21 +12,21 @@
                 <div th:if="${match.id != null}">
                     <div class="row justify-content-center my-3">
                         <div class="col-5">
-                            <img th:if="${match.matchStadium == 'SJ'}" src="/images/logos/LOT.jpg" alt="우리팀" class="team-logo"/>
-                            <img th:unless="${match.matchStadium == 'SJ'}" th:src="@{/images/logos/{team}.jpg(team=${match.opposingTeam})}" alt="상대팀" class="team-logo"/>
+                            <img th:if="${match.matchStadium.name() == 'SJ'}" src="/images/logos/LOT.jpg" alt="우리팀" class="team-logo"/>
+                            <img th:unless="${match.matchStadium.name() == 'SJ'}" th:src="@{/images/logos/{team}.jpg(team=${match.opposingTeam})}" alt="상대팀" class="team-logo"/>
                             <h1 class="fs-6 text-center">HOME</h1>
-                            <div th:if="${match.matchStadium == 'SJ'}" class="fs-6 text-center text-success">롯데 자이언츠</div>
-                            <div th:unless="${match.matchStadium == 'SJ'}" class="fs-6 text-center" th:text="${match.opposingTeam.getFullName()}"></div>
+                            <div th:if="${match.matchStadium.name() == 'SJ'}" class="fs-6 text-center text-success">롯데 자이언츠</div>
+                            <div th:unless="${match.matchStadium.name() == 'SJ'}" class="fs-6 text-center" th:text="${match.opposingTeam.getFullName()}"></div>
                         </div>
                         <div class="col-1 my-auto">
                             VS
                         </div>
                         <div class="col-5">
-                            <img th:if="${match.matchStadium == 'SJ'}" th:src="@{/images/logos/{team}.jpg(team=${match.opposingTeam})}" alt="상대팀" class="team-logo"/>
-                            <img th:unless="${match.matchStadium == 'SJ'}" src="/images/logos/LOT.jpg" alt="우리팀" class="team-logo"/>
+                            <img th:if="${match.matchStadium.name() == 'SJ'}" th:src="@{/images/logos/{team}.jpg(team=${match.opposingTeam})}" alt="상대팀" class="team-logo"/>
+                            <img th:unless="${match.matchStadium.name() == 'SJ'}" src="/images/logos/LOT.jpg" alt="우리팀" class="team-logo"/>
                             <h1 class="fs-6 text-center">AWAY</h1>
-                            <div th:if="${match.matchStadium == 'SJ'}" class="fs-6 text-center" th:text="${match.opposingTeam.getFullName()}"></div>
-                            <div th:unless="${match.matchStadium == 'SJ'}" class="fs-6 text-center text-success">롯데 자이언츠</div>
+                            <div th:if="${match.matchStadium.name() == 'SJ'}" class="fs-6 text-center" th:text="${match.opposingTeam.getFullName()}"></div>
+                            <div th:unless="${match.matchStadium.name() == 'SJ'}" class="fs-6 text-center text-success">롯데 자이언츠</div>
                         </div>
                     </div>
                     <div class="text-center mb-3">
