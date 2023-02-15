@@ -29,6 +29,10 @@ public class Match {
     @Column(nullable = false)
     private LocalDateTime matchDateTime;
 
+    private int ourVotes;
+
+    private int opponentVotes;
+
     @Builder
     public Match(OpposingTeam opposingTeam, Stadium matchStadium, LocalDateTime matchDateTime) {
         this.opposingTeam = opposingTeam;
@@ -36,4 +40,12 @@ public class Match {
         this.matchDateTime = matchDateTime;
     }
 
+    public int vote(boolean isHome) {
+        if(isHome) {
+            return ++this.ourVotes;
+        }
+        else {
+            return ++this.opponentVotes;
+        }
+    }
 }

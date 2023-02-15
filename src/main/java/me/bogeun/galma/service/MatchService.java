@@ -5,6 +5,7 @@ import me.bogeun.galma.entity.Match;
 import me.bogeun.galma.payload.Stadium;
 import me.bogeun.galma.repository.MatchRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,4 +27,10 @@ public class MatchService {
                         .build());
     }
 
+    @Transactional
+    public int voteWinPrediction(boolean isHome) {
+        Match match = getTodayMatch();
+
+        return match.vote(isHome);
+    }
 }

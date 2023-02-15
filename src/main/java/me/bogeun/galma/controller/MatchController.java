@@ -9,12 +9,12 @@ import me.bogeun.galma.service.ReplyService;
 import me.bogeun.galma.utils.WeatherDataSetting;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller
@@ -39,9 +39,27 @@ public class MatchController {
         model.addAttribute("replies", replyList);
         model.addAttribute("matchWeather", weather.get(matchWeatherIdx));
         model.addAttribute("nowWeather", weather.get(nowWeatherIdx));
+        model.addAttribute("homeRate", calRate(match.getOurVotes(), match.getOpponentVotes()));
+        model.addAttribute("awayRate", calRate(match.getOpponentVotes(), match.getOurVotes()));
 
 
         return "match/match-today";
+    }
+
+    @ResponseBody
+    @PostMapping("/vote")
+    public int voteWinPrediction(@RequestBody Map<String, Object> map) {
+        return matchService.voteWinPrediction((boolean) map.get("isHome"));
+    }
+
+
+
+    private long calRate(double win, double lose) {
+        if(win + lose == 0) {
+            return 50;
+        }
+
+        return Math.round(win / (win + lose) * 100);
     }
 
 

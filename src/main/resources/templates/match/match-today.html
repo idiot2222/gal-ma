@@ -105,7 +105,41 @@
     </div>
 
     <div class="row justify-content-center my-5">
-        <div class="col-10 bg-light radius px-3 py-2">
+        <div class="col-10 bg-light radius px-3 py-3">
+            <div class="row">
+                <div class="col-2 text-center my-auto">
+                    <button type="button" class="btn btn-primary" onclick="voteWinTeam(true)">
+                        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="fs-4 my-1 text-center col-8">승리 예측</div>
+                <div class="col-2 text-center my-auto">
+                    <button type="button" class="btn btn-danger" onclick="voteWinTeam(false)">
+                        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row justify-content-center mb-3">
+                <div class="col-2 fs-5 text-center">
+                    <div>롯데 자이언츠</div>
+                    <div class="fs-6" id="homeVotes" th:text="${match.getOurVotes()}"></div>
+                </div>
+                <div class="col-8 fs-5 my-auto">
+                    <div class="progress-stacked">
+                        <div class="progress" role="progressbar" aria-label="Segment one" th:style="${'width: ' + homeRate +'%'}">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
+                        </div>
+                        <div class="progress" role="progressbar" aria-label="Segment two" th:style="${'width: ' + awayRate +'%'}">
+                            <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2 fs-5 text-center">
+                    <div th:text="${match.opposingTeam.getFullName()}"></div>
+                    <div class="fs-6" id="awayVotes" th:text="${match.getOpponentVotes()}"></div>
+                </div>
+            </div>
+
             <div class="container mt-3">
                 <ul class="list-group list-group-flush">
                     <li th:each="reply: ${replies}" class="list-group-item fs-6">
@@ -141,6 +175,27 @@
 </div>
 
 </body>
+
+<script>
+    function voteWinTeam(isHome) {
+        let votes = isHome ? document.querySelector('#homeVotes') : document.querySelector('#awayVotes');
+
+        $.ajax({
+            url: '/match/vote',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                isHome: isHome,
+            }),
+            success: function (data) {
+                votes.innerHTML = ldata;
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    }
+</script>
 </html>
 
 <style>
