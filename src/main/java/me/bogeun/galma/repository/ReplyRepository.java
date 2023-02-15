@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface ReplyRepository extends JpaRepository<Reply, Long> {
 
-    List<Reply> getAllByPost(Post post);
+    List<Reply> findAllByPost(Post post);
+
 }

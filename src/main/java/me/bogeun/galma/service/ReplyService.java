@@ -26,7 +26,7 @@ public class ReplyService {
     }
 
     public List<Reply> getRepliesByPost(Post post) {
-        return replyRepository.getAllByPost(post);
+        return replyRepository.findAllByPost(post);
     }
 
     public void createNewReply(Long postId, Account account, String reply) {
