@@ -47,6 +47,9 @@ public class Account {
     @Column(nullable = false, columnDefinition = "TINYINT", length=1)
     private boolean isPublicDescription;
 
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
+
 
     @Builder
     public Account(String username, String nickname, String password, String email, LocalDateTime joinedAt, LocalDateTime nicknameChangedAt, String image, String description, boolean isPublicEmail, boolean isPublicDescription) {

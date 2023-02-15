@@ -12,7 +12,7 @@ public class UserAccount extends User {
     private final Account account;
 
     public UserAccount(Account account) {
-        super(account.getUsername(), account.getPassword(), List.of(new SimpleGrantedAuthority("USER")));
+        super(account.getUsername(), account.getPassword(), List.of(new SimpleGrantedAuthority(account.getUserRole().name())));
         this.account = account;
     }
 
