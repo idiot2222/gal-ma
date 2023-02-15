@@ -33,4 +33,19 @@ public class ReplyController {
         return "redirect:/board/post/" + postId;
     }
 
+    @PostMapping("/create/match")
+    public String createMatchReply(@CurrentUser Account currentAccount,
+                                   @RequestParam String reply) {
+        replyService.createNewMatchReply(currentAccount, reply);
+
+        return "redirect:/match/today";
+    }
+
+    @PostMapping("/delete/match/{replyId}")
+    public String deleteMatchReply(@PathVariable Long replyId, @CurrentUser Account currentAccount) {
+        replyService.deleteReply(replyId);
+
+        return "redirect:/match/today";
+    }
+
 }

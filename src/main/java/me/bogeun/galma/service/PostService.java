@@ -12,7 +12,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Locale;
 
@@ -22,6 +24,7 @@ import java.util.Locale;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final AccountService accountService;
 
     private final int PAGE_COUNT = 10;
 
@@ -59,5 +62,25 @@ public class PostService {
 
     public void addViews(Post post, int views) {
         post.addViews(views);
+    }
+
+    public Post getPostOfMatch(LocalDate date) {
+        LocalDateTime dateTime = LocalDateTime.of(date, LocalTime.MIN);
+        Account admin = accountService.getAccountByUsername("admin");
+
+        return postRepository.findByBoardTopicAndWroteAt(BoardTopic.MATCH, dateTime)
+                .orElseGet(() -> {
+                    Post post = Post.builder()
+                            .title(LocalDate.now().toString())
+                            .content(".")
+                            .boardTopic(BoardTopic.MATCH)
+                            .wroteAt(dateTime)
+                            .writer(admin)
+                            .build();
+
+                    postRepository.save(post);
+
+                    return post;
+                });
     }
 }

@@ -1,12 +1,16 @@
 package me.bogeun.galma.payload;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PostCreateForm {
 
     @NotBlank(message = "제목을 입력해 주세요.")

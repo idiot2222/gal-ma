@@ -103,6 +103,41 @@
             </div>
         </div>
     </div>
+
+    <div class="row justify-content-center my-5">
+        <div class="col-10 bg-light radius px-3 py-2">
+            <div class="container mt-3">
+                <ul class="list-group list-group-flush">
+                    <li th:each="reply: ${replies}" class="list-group-item fs-6">
+                        <div class="row">
+                            <div class="col-2 fw-semibold">
+                                <span th:text="${reply.account.nickname}"></span>
+                            </div>
+                            <div class="col-9">
+                                <span th:text="${reply.content}"></span>
+                            </div>
+                            <div class="col-1">
+                                <form th:if="${#authentication.principal.username == reply.account.username}" method="post"
+                                      th:action="@{/reply/delete/match/{replyId}(replyId=${reply.id})}"
+                                      class="m-0">
+                                    <button class="btn btn-link p-0 m-0 text-danger" style="text-decoration: none">X</button>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <form th:action="@{/reply/create/match}"
+                    class="row justify-content-center mt-3" method="post" id="reply-form">
+                <div class="col-10">
+                    <textarea class="form-control" name="reply" style="resize: none; height: 80px" required></textarea>
+                </div>
+                <div class="col-1">
+                    <input class="btn btn-outline-primary" type="submit" value="등록" style="height: 80px">
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 </body>

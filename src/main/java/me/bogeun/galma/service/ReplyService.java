@@ -8,6 +8,7 @@ import me.bogeun.galma.repository.ReplyRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,6 +30,10 @@ public class ReplyService {
         return replyRepository.findAllByPost(post);
     }
 
+    public List<Reply> getRepliesByPostDesc(Post post) {
+        return replyRepository.findAllByPostOrderByWroteAtDesc(post);
+    }
+
     public void createNewReply(Long postId, Account account, String reply) {
         Post post = postService.getPostById(postId);
 
@@ -45,5 +50,17 @@ public class ReplyService {
     public void deleteReply(Long replyId) {
         Reply reply = getReplyById(replyId);
         replyRepository.delete(reply);
+    }
+
+    public List<Reply> getRepliesOfMatchByDate(LocalDate date) {
+        Post post = postService.getPostOfMatch(date);
+
+        return getRepliesByPostDesc(post);
+    }
+
+    public void createNewMatchReply(Account account, String reply) {
+        Post post = postService.getPostOfMatch(LocalDate.now());
+
+        createNewReply(post.getId(), account, reply);
     }
 }
