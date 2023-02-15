@@ -1,6 +1,7 @@
 package me.bogeun.galma.service;
 
 import lombok.RequiredArgsConstructor;
+import me.bogeun.galma.entity.UserRole;
 import me.bogeun.galma.payload.AccountUpdateForm;
 import me.bogeun.galma.payload.SignUpForm;
 import me.bogeun.galma.entity.Account;
@@ -24,7 +25,7 @@ public class AccountService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public Account signUp(SignUpForm signUpForm) {
+    public Account signUp(SignUpForm signUpForm, UserRole role) {
         Account account = Account.builder()
                 .nickname(signUpForm.getNickname())
                 .username(signUpForm.getUsername())
@@ -34,6 +35,7 @@ public class AccountService implements UserDetailsService {
                 .nicknameChangedAt(LocalDateTime.now())
                 .isPublicDescription(true)
                 .isPublicEmail(true)
+                .userRole(role)
                 .build();
 
         return accountRepository.save(account);

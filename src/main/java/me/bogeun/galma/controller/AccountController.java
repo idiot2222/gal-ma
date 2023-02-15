@@ -2,6 +2,7 @@ package me.bogeun.galma.controller;
 
 import lombok.RequiredArgsConstructor;
 import me.bogeun.galma.entity.Account;
+import me.bogeun.galma.entity.UserRole;
 import me.bogeun.galma.payload.AccountUpdateForm;
 import me.bogeun.galma.payload.ChangePasswordForm;
 import me.bogeun.galma.payload.SignUpForm;
@@ -53,7 +54,7 @@ public class AccountController {
             return "account/sign-up";
         }
 
-        accountService.signUp(signUpForm);
+        accountService.signUp(signUpForm, UserRole.COMMON);
 
         return "redirect:/login";
     }

@@ -52,7 +52,7 @@ public class Account {
 
 
     @Builder
-    public Account(String username, String nickname, String password, String email, LocalDateTime joinedAt, LocalDateTime nicknameChangedAt, String image, String description, boolean isPublicEmail, boolean isPublicDescription) {
+    public Account(String username, String nickname, String password, String email, LocalDateTime joinedAt, LocalDateTime nicknameChangedAt, String image, String description, boolean isPublicEmail, boolean isPublicDescription, UserRole userRole) {
         this.username = username;
         this.nickname = nickname;
         this.password = password;
@@ -63,8 +63,8 @@ public class Account {
         this.description = description;
         this.isPublicEmail = isPublicEmail;
         this.isPublicDescription = isPublicDescription;
+        this.userRole = userRole;
     }
-
 
     @Override
     public boolean equals(Object o) {
