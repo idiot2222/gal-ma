@@ -178,21 +178,25 @@
 
 <script>
     function voteWinTeam(isHome) {
-        let votes = isHome ? document.querySelector('#homeVotes') : document.querySelector('#awayVotes');
+        const votes = isHome ? document.querySelector('#homeVotes') : document.querySelector('#awayVotes');
+        const csrfToken = Cookies.get('XSRF-TOKEN');
 
         $.ajax({
             url: '/match/vote',
             type: 'POST',
             contentType: 'application/json',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-XSRF-TOKEN', csrfToken);
+            },
             data: JSON.stringify({
                 isHome: isHome,
             }),
             success: function (data) {
-                votes.innerHTML = ldata;
+                votes.innerHTML = data;
             },
             error: function (xhr, status, error) {
                 console.error(error);
-            }
+            },
         });
     }
 </script>

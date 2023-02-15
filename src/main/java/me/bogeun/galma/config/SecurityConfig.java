@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import javax.sql.DataSource;
 
@@ -28,6 +29,9 @@ public class SecurityConfig {
                 .mvcMatchers("/", "/login", "/sign-up").permitAll()
                 .antMatchers(HttpMethod.POST, "/admin/*").hasRole("ADMIN")
                 .anyRequest().authenticated();
+
+        http.csrf()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
         http.formLogin()
                 .loginPage("/login")
