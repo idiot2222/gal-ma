@@ -1,10 +1,10 @@
 package me.bogeun.galma.controller;
 
 import lombok.RequiredArgsConstructor;
-import me.bogeun.galma.entity.Match;
-import me.bogeun.galma.entity.Reply;
+import me.bogeun.galma.entity.*;
 import me.bogeun.galma.payload.WeatherDto;
 import me.bogeun.galma.service.MatchService;
+import me.bogeun.galma.service.PlayerService;
 import me.bogeun.galma.service.ReplyService;
 import me.bogeun.galma.utils.WeatherDataSetting;
 import org.springframework.stereotype.Controller;
@@ -23,6 +23,7 @@ public class MatchController {
 
     private final MatchService matchService;
     private final ReplyService replyService;
+    private final PlayerService playerService;
 
     private final WeatherDataSetting weatherDataSetting;
 
@@ -51,6 +52,24 @@ public class MatchController {
     public int voteWinPrediction(@RequestBody Map<String, Object> map) {
         return matchService.voteWinPrediction((boolean) map.get("isHome"));
     }
+
+    @GetMapping("/lineup")
+    public String getLineUp() {
+        return "match/match-lineup";
+    }
+
+    @GetMapping("/lineup/vote")
+    public String getLineUpVote(Model model) {
+        List<Batter> batters = playerService.getBatterList();
+        List<Pitcher> pitchers = playerService.getPitcherList();
+
+        model.addAttribute("positionList", Position.values());
+        model.addAttribute("batterList", batters);
+        model.addAttribute("pitcherList", pitchers);
+
+        return "match/match-lineup-vote";
+    }
+
 
 
 
