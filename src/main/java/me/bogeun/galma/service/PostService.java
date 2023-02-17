@@ -41,7 +41,7 @@ public class PostService {
         postRepository.save(post);
     }
 
-    public List<Post> getPostsByTopic(String topic, int pageNumber) {
+    public List<Post> getPostsByTopicDesc(String topic, int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber-1, PAGE_COUNT, Sort.by(Sort.Direction.DESC, "wroteAt"));
 
         return postRepository.findAllByBoardTopic(BoardTopic.toEnumType(topic), pageable).getContent();
