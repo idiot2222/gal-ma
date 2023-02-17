@@ -8,18 +8,16 @@
     <div class="row mt-5 justify-content-center">
         <div class="col-6 bg-light radius px-3 py-2">
             <h1 class="display-6" th:text="${account.nickname}"></h1>
-            <div>
-                <p th:if="${isOwner || account.isPublicDescription}" class="lead" th:text="${account.description}"></p>
-                <p th:unless="${isOwner || account.isPublicDescription}" class="lead text-danger">사용자가 자기 소개를 공개하지 않습니다.</p>
-            </div>
-            <div th:if="${#strings.isEmpty(account.description)}">
-                <a th:if="${isOwner}" th:href="@{/profile/{username}/update(username=${#authentication.principal.username})}" class="link-secondary">
-                    <p class="lead">자기 소개를 추가해 주세요.</p>
-                </a>
-                <div th:unless="${isOwner}" >
-                    <p th:if="${account.isPublicDescription}" class="lead text-secondary">자기 소개를 입력하지 않았습니다.</p>
-                    <p th:unless="${account.isPublicDescription}" class="lead text-danger">사용자가 자기 소개를 공개하지 않습니다.</p>
+            <div th:unless="${isOwner}" class="lead">
+                <div th:if="${account.isPublicDescription}">
+                    <p th:if="${#strings.isEmpty(account.description)}">자기 소개를 작성하지 않았습니다.</p>
+                    <p th:unless="${#strings.isEmpty(account.description)}" th:text="${account.description}"></p>
                 </div>
+                <p th:unless="${account.isPublicDescription}" class="text-danger">사용자가 자기 소개를 공개하지 않습니다.</p>
+            </div>
+            <div th:if="${isOwner}" class="lead">
+                <a th:if="${#strings.isEmpty(account.description)}" th:href="@{/profile/{username}/update(username=${#authentication.principal.username})}" class="link-secondary">자기 소개를 추가해 주세요.</a>
+                <p th:unless="${#strings.isEmpty(account.description)}" th:text="${account.description}"></p>
             </div>
             <div th:if="${isOwner}" class="right my-4 px-3">
                 <small th:if="${account.isPublicDescription}" class="text-success">다른 사용자들에게 자기 소개가 공개됩니다.</small>
@@ -56,9 +54,15 @@
                                 <i th:unless="${account.isPublicEmail}" class="col-1 fa fa-envelope-o text-danger"></i>
                                 <span class="col-9" th:text="${account.email}"></span>
                             </div>
-                            <div th:unless="${isOwner || account.isPublicEmail}">
-                                <i class="col-1 fa fa-envelope-o text-danger"></i>
-                                <span class="col-9"> - </span>
+                            <div th:unless="${isOwner}">
+                                <div th:if="${account.isPublicEmail}">
+                                    <i class="col-1 fa fa-envelope-o text-success"></i>
+                                    <span class="col-9" th:text="${account.email}"></span>
+                                </div>
+                                <div th:unless="${account.isPublicEmail}">
+                                    <i th:unless="${account.isPublicEmail}" class="col-1 fa fa-envelope-o text-danger"></i>
+                                    <span class="col-9">-</span>
+                                </div>
                             </div>
                         </li>
                         <div th:if="${isOwner}" class="right my-4 px-3">
