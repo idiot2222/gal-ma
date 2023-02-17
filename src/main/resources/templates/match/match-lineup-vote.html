@@ -191,8 +191,8 @@
 <script th:inline="javascript">
     /*<![CDATA[*/
     const length = document.querySelectorAll("[id^='batterSelect']").length;
-    const batterSelectedList = [9];
-    const positionSelectedList = [9];
+    const batterSelectedList = ['-', '-', '-', '-', '-', '-', '-', '-', '-'];
+    const positionSelectedList = ['-', '-', '-', '-', '-', '-', '-', '-', '-'];
 
     for(let i = 0 ; i < length ; i++) {
         const batterSelect = document.getElementById("batterSelect" + i);
@@ -249,13 +249,17 @@
         });
 
         clearBtn.addEventListener("click", function () {
+            const submit = document.querySelector('#submit');
+
             positionSelect.innerHTML = '<option selected>-</option>';
             positionSelect.disabled = true;
 
             batterSelect.selectedIndex = 0;
 
             batterSelectedList[i] = -1;
-            positionSelectedList[i] = null;
+            positionSelectedList[i] = '-';
+
+            submit.disabled = true;
 
             applyAllBatterSelectDisable();
         });
