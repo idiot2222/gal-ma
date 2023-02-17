@@ -150,7 +150,7 @@
                     </table>
                 </div>
                 <div class="col-4 text-center">
-                    <form>
+                    <div>
                         <div class="fs-4 my-3">예상 라인업 투표하기</div>
                         <table class="table bg-white">
                             <thead>
@@ -162,26 +162,26 @@
                             </thead>
                             <tbody>
                             <tr th:each="num : ${#numbers.sequence(0, 8)}">
-                                <th scope="row" th:text="${num + 1}"></th>
+                                <th scope="row" th:text="${num} + 1"></th>
                                 <td>
-                                    <select th:id="batterSelect + ${num}" class="form-select form-select-sm" aria-label="Default select example">
-                                        <option selected>-</option>
-                                        <option th:id="${info.index}" th:each="batter, info : ${batterList}" th:value="${batter}" th:text="${batter.getName() + ' (' + batter.getBackNumber()} + ')'"></option>
+                                    <select th:id="batterSelect + ${num} " class="form-select form-select-sm">
+                                        <option value="-" selected>-</option>
+                                        <option th:id="${info.index} " th:each="batter, info : ${batterList}" th:value="${batter}" th:text="${batter.getName() + ' (' + batter.getBackNumber()} + ')'"></option>
                                     </select>
                                 </td>
                                 <td>
-                                    <select th:id="positionSelect + ${num}" class="form-select form-select-sm" aria-label="Default select example" disabled>
-                                        <option selected>-</option>
+                                    <select th:id="positionSelect + ${num} " class="form-select form-select-sm" disabled>
+                                        <option value="-" selected>-</option>
                                     </select>
                                 </td>
                                 <td class="align-middle">
-                                    <i th:id="clearBtn + ${num}" class="btn fa fa-minus-circle text-danger p-1 m-0" aria-hidden="true"></i>
+                                    <i th:id="clearBtn + ${num} " class="btn fa fa-minus-circle text-danger p-1 m-0" aria-hidden="true"></i>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
-                        <input id="submit" type="submit" class="btn btn-primary mt-3" value="투표하기" disabled />
-                    </form>
+                        <button id="submit" class="btn btn-primary mt-3" onclick="submitHandler()" disabled>투표하기</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -193,6 +193,10 @@
     const length = document.querySelectorAll("[id^='batterSelect']").length;
     const batterSelectedList = ['-', '-', '-', '-', '-', '-', '-', '-', '-'];
     const positionSelectedList = ['-', '-', '-', '-', '-', '-', '-', '-', '-'];
+    const batters = new Array(9);
+
+    const submit = document.querySelector('#submit');
+
 
     for(let i = 0 ; i < length ; i++) {
         const batterSelect = document.getElementById("batterSelect" + i);
@@ -212,6 +216,7 @@
                 const positions = selectedBatter.positions;
                 positions.push("DH");
                 batterSelectedList[i] = idx;
+                batters[i] = batterList[idx];
 
                 for (const position of positions) {
                     const option = document.createElement('option');
@@ -228,6 +233,7 @@
                 positionSelect.disabled = true;
 
                 batterSelectedList[i] = -1;
+                batters[i] = null;
             }
 
             applyAllBatterSelectDisable();
@@ -235,12 +241,14 @@
 
         positionSelect.addEventListener("change", function () {
             positionSelectedList[i] = positionSelect.value;
-            const submit = document.querySelector('#submit');
 
             for (let j = 0; j < length; j++) {
                 const p = document.getElementById("positionSelect" + j);
                 const options = p.options;
                 for (const option of options) {
+                    if(option.text === '-') {
+                        continue;
+                    }
                     option.disabled = !!positionSelectedList.includes(option.value);
                 }
             }
@@ -249,20 +257,42 @@
         });
 
         clearBtn.addEventListener("click", function () {
-            const submit = document.querySelector('#submit');
-
             positionSelect.innerHTML = '<option selected>-</option>';
             positionSelect.disabled = true;
 
             batterSelect.selectedIndex = 0;
 
             batterSelectedList[i] = -1;
+            batters[i] = null;
             positionSelectedList[i] = '-';
 
             submit.disabled = true;
 
             applyAllBatterSelectDisable();
         });
+    }
+
+    function submitHandler() {
+        const csrfToken = Cookies.get('XSRF-TOKEN');
+
+        $.ajax({
+            url: "/match/lineup/vote",
+            type: "POST",
+            contentType: 'application/json',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-XSRF-TOKEN', csrfToken);
+            },
+            data: JSON.stringify({
+                "players": batters,
+                "positions": positionSelectedList
+            }),
+            success: function (data) {
+                location.reload();
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            },
+        })
     }
 
     function applyAllBatterSelectDisable() {

@@ -24,4 +24,7 @@ public class PlayerService {
         return pitcherRepository.findAll();
     }
 
+    public Batter getBatterById(Long batterId) {
+        return batterRepository.findById(batterId).orElseThrow(() -> new IllegalArgumentException("invalid batter id."));
+    }
 }

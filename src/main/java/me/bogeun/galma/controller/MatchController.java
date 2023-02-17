@@ -2,10 +2,12 @@ package me.bogeun.galma.controller;
 
 import lombok.RequiredArgsConstructor;
 import me.bogeun.galma.entity.*;
+import me.bogeun.galma.payload.LineUpVoteForm;
 import me.bogeun.galma.payload.WeatherDto;
 import me.bogeun.galma.service.MatchService;
 import me.bogeun.galma.service.PlayerService;
 import me.bogeun.galma.service.ReplyService;
+import me.bogeun.galma.service.VoteService;
 import me.bogeun.galma.utils.WeatherDataSetting;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,7 @@ public class MatchController {
     private final MatchService matchService;
     private final ReplyService replyService;
     private final PlayerService playerService;
+    private final VoteService voteService;
 
     private final WeatherDataSetting weatherDataSetting;
 
@@ -66,10 +69,17 @@ public class MatchController {
         model.addAttribute("positionList", Position.values());
         model.addAttribute("batterList", batters);
         model.addAttribute("pitcherList", pitchers);
+        model.addAttribute("voteForm", new LineUpVoteForm());
 
         return "match/match-lineup-vote";
     }
 
+    @PostMapping("/lineup/vote")
+    public String postLineUpVote(@RequestBody LineUpVoteForm voteForm) {
+        voteService.voteBatterAll(voteForm);
+
+        return "redirect:/match/lineup/vote";
+    }
 
 
 
