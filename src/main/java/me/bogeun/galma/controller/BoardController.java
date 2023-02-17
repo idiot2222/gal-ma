@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -31,7 +33,7 @@ public class BoardController {
     public String getBoard(@PathVariable String topic, Model model,
                            @PathVariable int pageNumber) {
 
-        List<Post> posts = postService.getPostsByTopic(topic, pageNumber);
+        List<Post> posts = postService.getPostsByTopicDesc(topic, pageNumber);
         int maxPageNumber = postService.getMaxPageNumber(topic);
 
         model.addAttribute("boardTopic", BoardTopic.toEnumType(topic));
@@ -64,18 +66,33 @@ public class BoardController {
 
     @GetMapping("/post/{postId}")
     public String getPost(HttpServletRequest request,
-                          @PathVariable Long postId, Model model) {
+                          @PathVariable Long postId, Model model,
+                          @RequestParam(defaultValue = "1") int replyPage) {
         Post post = postService.getPostById(postId);
-        List<Reply> replies = replyService.getRepliesByPost(post);
+        List<Reply> replies = replyService.getRepliesByPost(post, replyPage);
+        int maxReplyPageNumber = replyService.getMaxReplyPageNumber(post);
 
-        if (!request.getHeader("Referer").equals(request.getRequestURL().toString())) {
+        if (!getReferer(request).equals(request.getServletPath())) {
             postService.addViews(post, 1);
         }
 
         model.addAttribute(post);
         model.addAttribute("replies", replies);
+        model.addAttribute("maxReplyPageNumber", maxReplyPageNumber);
 
         return "board/post";
+    }
+
+    private String getReferer(HttpServletRequest request) {
+        URI uri;
+
+        try {
+            uri = new URI(request.getHeader("Referer"));
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("잘못된 uri 경로입니다.");
+        }
+
+        return uri.getPath();
     }
 
 }
