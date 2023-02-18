@@ -20,7 +20,7 @@ public class Match {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private OpposingTeam opposingTeam;
+    private Team opposingTeam;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -34,7 +34,7 @@ public class Match {
     private int opponentVotes;
 
     @Builder
-    public Match(OpposingTeam opposingTeam, Stadium matchStadium, LocalDateTime matchDateTime) {
+    public Match(Team opposingTeam, Stadium matchStadium, LocalDateTime matchDateTime) {
         this.opposingTeam = opposingTeam;
         this.matchStadium = matchStadium;
         this.matchDateTime = matchDateTime;
