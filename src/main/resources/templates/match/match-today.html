@@ -74,30 +74,37 @@
                 </div>
             </div>
             <div class="bg-light radius px-3 py-2 mt-4">
-                <div class="mb-3">
-                    <span class="fs-5">경기 예정 시각 날씨</span>
-                    <span class="fs-6 right" th:text="${#temporals.format(match.matchDateTime, 'yyyy/MM/dd(EE) HH:mm')}"></span>
+                <div th:if="${match.id != null}">
+                    <div class="mb-3">
+                        <span class="fs-5">경기 예정 시각 날씨</span>
+                        <span class="fs-6 right" th:text="${#temporals.format(match.matchDateTime, 'yyyy/MM/dd(EE) HH:mm')}"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <div>
+                                <img th:src="@{/images/weather/SKY_{value}.jpg(value=${matchWeather.getValue('SKY')})}" width="100" height="100" alt="하늘"/>
+                            </div>
+                            <div>기온 : <span th:text="${matchWeather.getValue('TMP')}"></span>°C</div>
+                        </div>
+                        <div class="col-4">
+                            <div>
+                                <img src="/images/weather/WND.jpg" width="100" height="100" alt="풍속"/>
+                            </div>
+                            <div>풍속 : <span th:text="${matchWeather.getValue('WSD')}"></span>m/s</div>
+                        </div>
+                        <div class="col-4">
+                            <div>
+                                <img th:src="@{/images/weather/PTY_{value}.jpg(value=${matchWeather.getValue('PTY')})}" width="100" height="100" alt="강수 타입"/>
+                            </div>
+                            <div>
+                                강수 확률 : <span th:text="${matchWeather.getValue('POP')}"></span>%
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="row">
-                    <div class="col-4">
-                        <div>
-                            <img th:src="@{/images/weather/SKY_{value}.jpg(value=${matchWeather.getValue('SKY')})}" width="100" height="100" alt="하늘"/>
-                        </div>
-                        <div>기온 : <span th:text="${matchWeather.getValue('TMP')}"></span>°C</div>
-                    </div>
-                    <div class="col-4">
-                        <div>
-                            <img src="/images/weather/WND.jpg" width="100" height="100" alt="풍속"/>
-                        </div>
-                        <div>풍속 : <span th:text="${matchWeather.getValue('WSD')}"></span>m/s</div>
-                    </div>
-                    <div class="col-4">
-                        <div>
-                            <img th:src="@{/images/weather/PTY_{value}.jpg(value=${matchWeather.getValue('PTY')})}" width="100" height="100" alt="강수 타입"/>
-                        </div>
-                        <div>
-                            강수 확률 : <span th:text="${matchWeather.getValue('POP')}"></span>%
-                        </div>
+                <div th:unless="${match.id != null}">
+                    <div class="text-center fs-4 py-5">
+                        오늘 경기 없음
                     </div>
                 </div>
             </div>
@@ -106,37 +113,39 @@
 
     <div class="row justify-content-center my-5">
         <div class="col-10 bg-light radius px-3 py-3">
-            <div class="row">
-                <div class="col-2 text-center my-auto">
-                    <button type="button" class="btn btn-primary" onclick="voteWinTeam(true)">
-                        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-                    </button>
-                </div>
-                <div class="fs-4 my-1 text-center col-8">승리 예측</div>
-                <div class="col-2 text-center my-auto">
-                    <button type="button" class="btn btn-danger" onclick="voteWinTeam(false)">
-                        <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="row justify-content-center mb-3">
-                <div class="col-2 fs-5 text-center">
-                    <div>롯데 자이언츠</div>
-                    <div class="fs-6" id="homeVotes" th:text="${match.getOurVotes()}"></div>
-                </div>
-                <div class="col-8 fs-5 my-auto">
-                    <div class="progress-stacked">
-                        <div class="progress" role="progressbar" aria-label="Segment one" th:style="${'width: ' + homeRate +'%'}">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
-                        </div>
-                        <div class="progress" role="progressbar" aria-label="Segment two" th:style="${'width: ' + awayRate +'%'}">
-                            <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated"></div>
-                        </div>
+            <div th:if="${match.id != null}">
+                <div class="row">
+                    <div class="col-2 text-center my-auto">
+                        <button type="button" class="btn btn-primary" onclick="voteWinTeam(true)">
+                            <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="fs-4 my-1 text-center col-8">승리 예측</div>
+                    <div class="col-2 text-center my-auto">
+                        <button type="button" class="btn btn-danger" onclick="voteWinTeam(false)">
+                            <i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                        </button>
                     </div>
                 </div>
-                <div class="col-2 fs-5 text-center">
-                    <div th:text="${match.opposingTeam.getFullName()}"></div>
-                    <div class="fs-6" id="awayVotes" th:text="${match.getOpponentVotes()}"></div>
+                <div class="row justify-content-center mb-3">
+                    <div class="col-2 fs-5 text-center">
+                        <div>롯데 자이언츠</div>
+                        <div class="fs-6" id="homeVotes" th:text="${match.getOurVotes()}"></div>
+                    </div>
+                    <div class="col-8 fs-5 my-auto">
+                        <div class="progress-stacked">
+                            <div class="progress" role="progressbar" aria-label="Segment one" th:style="${'width: ' + homeRate +'%'}">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
+                            </div>
+                            <div class="progress" role="progressbar" aria-label="Segment two" th:style="${'width: ' + awayRate +'%'}">
+                                <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2 fs-5 text-center">
+                        <div th:text="${match.opposingTeam.getFullName()}"></div>
+                        <div class="fs-6" id="awayVotes" th:text="${match.getOpponentVotes()}"></div>
+                    </div>
                 </div>
             </div>
 

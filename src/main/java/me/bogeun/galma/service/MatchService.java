@@ -2,6 +2,7 @@ package me.bogeun.galma.service;
 
 import lombok.RequiredArgsConstructor;
 import me.bogeun.galma.entity.Match;
+import me.bogeun.galma.entity.Team;
 import me.bogeun.galma.payload.Stadium;
 import me.bogeun.galma.repository.MatchRepository;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,9 @@ public class MatchService {
 
         return matchRepository.findByMatchDateTimeBetween(startOfToday, endOfToday)
                 .orElse(Match.builder()
+                        .matchDateTime(LocalDateTime.now())
                         .matchStadium(Stadium.SJ)
+                        .opposingTeam(Team.LOT)
                         .build());
     }
 
