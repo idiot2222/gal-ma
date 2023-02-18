@@ -81,6 +81,11 @@ public class MatchController {
         return "redirect:/match/lineup/vote";
     }
 
+    @GetMapping("/lineup/result")
+    public String getLineUpResult() {
+        return "match/match-lineup-result";
+    }
+
 
 
     private long calRate(double win, double lose) {
