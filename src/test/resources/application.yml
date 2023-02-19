@@ -17,6 +17,9 @@ api:
   weather:
     uri: ${env.api.uri}
     key: ${env.api.key}
+  memcached:
+    host: localhost
+    port: 11211
 
 cache:
   weather:
