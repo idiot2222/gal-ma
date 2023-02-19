@@ -120,7 +120,7 @@ public class VoteService {
                 continue;
             }
 
-            VoteDto voteDto = new VoteDto(batter.getName(), position, votes);
+            VoteDto voteDto = new VoteDto(batter.getName(), position, votes, batter.getHandedness().getBattingHand());
             resultList.set(seq - 1, voteDto);
             cnt++;
         }
@@ -145,7 +145,7 @@ public class VoteService {
             Integer votes = votesNoSeq.get(idx);
             idx++;
 
-            VoteDto voteDto = new VoteDto(batter.getName(), position, votes);
+            VoteDto voteDto = new VoteDto(batter.getName(), position, votes, batter.getHandedness().getBattingHand());
             resultList.set(seq - 1, voteDto);
         }
     }

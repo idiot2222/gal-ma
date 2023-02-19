@@ -20,64 +20,16 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>황성빈</td>
-                            <td>L</td>
-                            <td>CF</td>
+                        <tr th:each="batter, stat : ${batters}">
+                            <th th:text="${stat.index} + 1"></th>
+                            <td th:text="${batter.name}"></td>
+                            <td th:text="${batter.hand}">L</td>
+                            <td th:text="${batter.position}"></td>
                         </tr>
                         <tr>
-                            <th scope="row">2</th>
-                            <td>고승민</td>
-                            <td>L</td>
-                            <td>RF</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>렉스</td>
-                            <td>L</td>
-                            <td>LF</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">4</th>
-                            <td>한동희</td>
-                            <td>R</td>
-                            <td>3B</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">5</th>
-                            <td>전준우</td>
-                            <td>R</td>
-                            <td>DH</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">6</th>
-                            <td>안치홍</td>
-                            <td>R</td>
-                            <td>2B</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">7</th>
-                            <td>노진혁</td>
-                            <td>L</td>
-                            <td>SS</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">8</th>
-                            <td>정훈</td>
-                            <td>R</td>
-                            <td>1B</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">9</th>
-                            <td>유강남</td>
-                            <td>R</td>
-                            <td>C</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">-</th>
-                            <td>스트레일리</td>
-                            <td>R</td>
+                            <th>-</th>
+                            <td th:text="${pitcher.name}"></td>
+                            <td th:text="${pitcher.handedness.pitchingHand}"></td>
                             <td>SP</td>
                         </tr>
                         </tbody>

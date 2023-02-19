@@ -9,6 +9,6 @@ public enum Handedness {
     RPRB("R", "R"), RPLB("R", "L"), RPSB("R", "S"),
     LPRB("L", "R"), LPLB("L", "L"), LPSB("L", "S");
 
-    private final String battingHand;
     private final String pitchingHand;
+    private final String battingHand;
 }

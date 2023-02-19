@@ -57,7 +57,12 @@ public class MatchController {
     }
 
     @GetMapping("/lineup")
-    public String getLineUp() {
+    public String getLineUp(Model model) {
+        VoteResultDto voteResult = voteService.getAllVoteResult();
+
+        model.addAttribute("batters", voteResult.getFirst());
+        model.addAttribute("pitcher", voteResult.getFirstPitcher());
+
         return "match/match-lineup";
     }
 

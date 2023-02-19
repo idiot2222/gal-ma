@@ -17,4 +17,6 @@ public class VoteDto {
 
     private int votes;
 
+    private String hand;
+
 }
