@@ -83,7 +83,7 @@ public class MatchController {
 
     @GetMapping("/lineup/result")
     public String getLineUpResult(Model model) {
-        VoteResultDto voteResult = voteService.getVoteResult();
+        VoteResultDto voteResult = voteService.getAllVoteResult();
 
         model.addAttribute("voteResult", voteResult);
 

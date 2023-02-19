@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import me.bogeun.galma.entity.Batter;
 import me.bogeun.galma.entity.BatterVote;
+import me.bogeun.galma.entity.Pitcher;
 import me.bogeun.galma.entity.Position;
 import me.bogeun.galma.payload.LineUpVoteForm;
 import me.bogeun.galma.payload.VoteDto;
 import me.bogeun.galma.payload.VoteResultDto;
 import me.bogeun.galma.repository.BatterVoteRepository;
+import me.bogeun.galma.repository.PitcherRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,12 +22,15 @@ import java.util.stream.Collectors;
 public class VoteService {
 
     private final BatterVoteRepository batterVoteRepository;
+    private final PitcherRepository pitcherRepository;
 
     @Transactional
     public void voteBatterAll(LineUpVoteForm voteForm) {
         List<Batter> batters = voteForm.getPlayers();
+        Pitcher pitcher = voteForm.getPitcher();
         List<Position> positions = voteForm.getPositions();
 
+        votePitcher(pitcher);
         for (int i = 0; i < 9; i++) {
             Batter batter = batters.get(i);
             Position position = positions.get(i);
@@ -33,6 +38,12 @@ public class VoteService {
             voteBatterByKey(batter, String.valueOf(i + 1));
             voteBatterByKey(batter, position.name());
         }
+    }
+
+    private void votePitcher(Pitcher pitcher) {
+        pitcher.vote();
+
+        System.err.println(pitcher);
     }
 
     private void voteBatterByKey(Batter batter, String keyword) {
@@ -47,11 +58,12 @@ public class VoteService {
         batterVoteRepository.save(batterVote);
     }
 
-    public VoteResultDto getVoteResult() {
+    public VoteResultDto getAllVoteResult() {
         List<BatterVote> all = batterVoteRepository.findAll();
         Map<Batter, PriorityQueue<Vote>> positionMap = new HashMap<>();
         Map<Batter, PriorityQueue<Vote>> seqMap = new HashMap<>();
         Map<Batter, Integer> totalVotes = new HashMap<>();
+        List<Pitcher> pitchers = pitcherRepository.findAllTop3ByOrderByVotesDesc();
 
         settingsAll(all, positionMap, seqMap, totalVotes);
 
@@ -61,6 +73,9 @@ public class VoteService {
         getLineUpByVotes(totalVotesQueue, positionMap, seqMap, voteResultDto.getFirst());
         getLineUpByVotes(totalVotesQueue, positionMap, seqMap, voteResultDto.getSecond());
         getLineUpByVotes(totalVotesQueue, positionMap, seqMap, voteResultDto.getThird());
+        voteResultDto.setFirstPitcher(pitchers.get(0));
+        voteResultDto.setSecondPitcher(pitchers.get(1));
+        voteResultDto.setThirdPitcher(pitchers.get(2));
 
         return voteResultDto;
     }

@@ -1,10 +1,12 @@
 package me.bogeun.galma.entity;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+@Getter
 @NoArgsConstructor
 @Entity
 public class Pitcher extends Player {
@@ -17,4 +19,7 @@ public class Pitcher extends Player {
         this.votes = votes;
     }
 
+    public void vote() {
+        this.votes++;
+    }
 }

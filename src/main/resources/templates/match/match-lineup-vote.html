@@ -61,7 +61,7 @@
                             <thead>
                             <tr>
                                 <th scope="col">타순</th>
-                                <th scope="col">타자</th>
+                                <th scope="col">선수</th>
                                 <th scope="col">포지션</th>
                             </tr>
                             </thead>
@@ -83,6 +83,18 @@
                                     <i th:id="clearBtn + ${num} " class="btn fa fa-minus-circle text-danger p-1 m-0" aria-hidden="true"></i>
                                 </td>
                             </tr>
+                            <tr>
+                                <th scope="row">-</th>
+                                <td>
+                                    <select id="pitcherSelect" class="form-select form-select-sm">
+                                        <option value="-" selected>-</option>
+                                        <option th:id="${stat.index}" th:each="pitcher, stat : ${pitcherList}" th:value="${pitcher}" th:text="${pitcher.getName() + ' (' + pitcher.getBackNumber()} + ')'"></option>
+                                    </select>
+                                </td>
+                                <td class="align-middle">
+                                    <span class="mx-2">SP</span>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                         <button id="submit" class="btn btn-primary mt-3" onclick="submitHandler()" disabled>투표하기</button>
@@ -100,7 +112,26 @@
     const positionSelectedList = ['-', '-', '-', '-', '-', '-', '-', '-', '-'];
     const batters = new Array(9);
 
+    const pitcherSelect = document.querySelector("#pitcherSelect");
+    let pitcher = "-";
+
     const submit = document.querySelector('#submit');
+
+    pitcherSelect.addEventListener("change", function () {
+        const pitcherList = /*[[${pitcherList}]]*/;
+        const idx = pitcherSelect.options[pitcherSelect.selectedIndex].id;
+        pitcher = idx ? pitcherList[idx] : '-';
+
+        const g = document.getElementById('graphic-P');
+        if(pitcher !== '-') {
+            g.innerText = pitcher.name;
+        }
+        else {
+            g.innerText = '-';
+        }
+
+        submit.disabled = checkSubmit();
+    });
 
     for(let i = 0 ; i < length ; i++) {
         const batterSelect = document.getElementById("batterSelect" + i);
@@ -142,6 +173,7 @@
             }
 
             applyAllBatterSelectDisable();
+            printGraphicChart();
         });
 
         positionSelect.addEventListener("change", function () {
@@ -158,9 +190,22 @@
                 }
             }
 
-            submit.disabled = positionSelectedList.includes('-');
-            printGraphicChart()
+            submit.disabled = checkSubmit();
+            printGraphicChart();
         });
+
+        function checkSubmit() {
+            for (const s of positionSelectedList) {
+                if(s === '-') {
+                    return true;
+                }
+            }
+            if(pitcher === '-') {
+                return true;
+            }
+
+            return false;
+        }
 
         clearBtn.addEventListener("click", function () {
             positionSelect.innerHTML = '<option selected>-</option>';
@@ -181,18 +226,21 @@
 
     function printGraphicChart() {
         const graphics = document.querySelectorAll("[id^='graphic-']");
-
         for (const graphic of graphics) {
             graphic.innerText = '-';
         }
 
-
         for (let i = 0 ; i < 9 ; i++) {
             const batter = batters[i];
+            if(!batter || positionSelectedList[i] === '-') {
+                continue;
+            }
+            const g = document.getElementById('graphic-' + positionSelectedList[i]);
 
-            if(batter) {
-                const g = document.getElementById('graphic-' + positionSelectedList[i]);
-
+            if(batter === '-') {
+                g.innerText = "-";
+            }
+            else {
                 g.innerText = batter.name;
             }
         }
@@ -210,6 +258,7 @@
             },
             data: JSON.stringify({
                 "players": batters,
+                "pitcher": pitcher,
                 "positions": positionSelectedList
             }),
             success: function (data) {

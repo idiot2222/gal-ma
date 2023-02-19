@@ -30,9 +30,9 @@
                                 </tr>
                                 <tr>
                                     <th scope="row">-</th>
-                                    <td>스트레일리</td>
-                                    <td>P</td>
-                                    <td>10000</td>
+                                    <td th:text="${voteResult.firstPitcher.name}"></td>
+                                    <td>SP</td>
+                                    <td th:text="${voteResult.firstPitcher.votes}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -56,9 +56,9 @@
                                 </tr>
                                 <tr>
                                     <th scope="row">-</th>
-                                    <td>반즈</td>
-                                    <td>P</td>
-                                    <td>10000</td>
+                                    <td th:text="${voteResult.secondPitcher.name}"></td>
+                                    <td>SP</td>
+                                    <td th:text="${voteResult.secondPitcher.votes}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -82,9 +82,9 @@
                                 </tr>
                                 <tr>
                                     <th scope="row">-</th>
-                                    <td>박세웅</td>
-                                    <td>P</td>
-                                    <td>10000</td>
+                                    <td th:text="${voteResult.thirdPitcher.name}"></td>
+                                    <td>SP</td>
+                                    <td th:text="${voteResult.thirdPitcher.votes}"></td>
                                 </tr>
                                 </tbody>
                             </table>
