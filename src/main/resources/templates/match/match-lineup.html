@@ -23,14 +23,20 @@
                         <tr th:each="batter, stat : ${batters}">
                             <th th:text="${stat.index} + 1"></th>
                             <td th:text="${batter.name}"></td>
-                            <td th:text="${batter.hand}">L</td>
+                            <td th:text="${batter.hand}"></td>
                             <td th:text="${batter.position}"></td>
                         </tr>
-                        <tr>
+                        <tr th:unless="${pitcher.votes == 0}">
                             <th>-</th>
                             <td th:text="${pitcher.name}"></td>
                             <td th:text="${pitcher.handedness.pitchingHand}"></td>
                             <td>SP</td>
+                        </tr>
+                        <tr th:if="${pitcher.votes == 0}">
+                            <th>-</th>
+                            <td>-</td>
+                            <td></td>
+                            <td>-</td>
                         </tr>
                         </tbody>
                     </table>

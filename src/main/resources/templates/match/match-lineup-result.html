@@ -28,11 +28,17 @@
                                     <td th:text="${vote.position}"></td>
                                     <td th:text="${vote.votes}"></td>
                                 </tr>
-                                <tr>
+                                <tr th:unless="${voteResult.firstPitcher.votes == 0}">
                                     <th scope="row">-</th>
                                     <td th:text="${voteResult.firstPitcher.name}"></td>
                                     <td>SP</td>
                                     <td th:text="${voteResult.firstPitcher.votes}"></td>
+                                </tr>
+                                <tr th:if="${voteResult.firstPitcher.votes == 0}">
+                                    <th scope="row">-</th>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -54,11 +60,17 @@
                                     <td th:text="${vote.position}"></td>
                                     <td th:text="${vote.votes}"></td>
                                 </tr>
-                                <tr>
+                                <tr th:unless="${voteResult.secondPitcher.votes == 0}">
                                     <th scope="row">-</th>
                                     <td th:text="${voteResult.secondPitcher.name}"></td>
                                     <td>SP</td>
                                     <td th:text="${voteResult.secondPitcher.votes}"></td>
+                                </tr>
+                                <tr th:if="${voteResult.secondPitcher.votes == 0}">
+                                    <th scope="row">-</th>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -80,11 +92,17 @@
                                     <td th:text="${vote.position}"></td>
                                     <td th:text="${vote.votes}"></td>
                                 </tr>
-                                <tr>
+                                <tr th:unless="${voteResult.thirdPitcher.votes == 0}">
                                     <th scope="row">-</th>
                                     <td th:text="${voteResult.thirdPitcher.name}"></td>
                                     <td>SP</td>
                                     <td th:text="${voteResult.thirdPitcher.votes}"></td>
+                                </tr>
+                                <tr th:if="${voteResult.thirdPitcher.votes == 0}">
+                                    <th scope="row">-</th>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
                                 </tr>
                                 </tbody>
                             </table>
