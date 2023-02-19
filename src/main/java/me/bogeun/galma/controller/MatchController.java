@@ -3,6 +3,7 @@ package me.bogeun.galma.controller;
 import lombok.RequiredArgsConstructor;
 import me.bogeun.galma.entity.*;
 import me.bogeun.galma.payload.LineUpVoteForm;
+import me.bogeun.galma.payload.VoteResultDto;
 import me.bogeun.galma.payload.WeatherDto;
 import me.bogeun.galma.service.MatchService;
 import me.bogeun.galma.service.PlayerService;
@@ -46,7 +47,6 @@ public class MatchController {
         model.addAttribute("homeRate", calRate(match.getOurVotes(), match.getOpponentVotes()));
         model.addAttribute("awayRate", calRate(match.getOpponentVotes(), match.getOurVotes()));
 
-
         return "match/match-today";
     }
 
@@ -78,11 +78,15 @@ public class MatchController {
     public String postLineUpVote(@RequestBody LineUpVoteForm voteForm) {
         voteService.voteBatterAll(voteForm);
 
-        return "redirect:/match/lineup/vote";
+        return "redirect:/match/lineup";
     }
 
     @GetMapping("/lineup/result")
-    public String getLineUpResult() {
+    public String getLineUpResult(Model model) {
+        VoteResultDto voteResult = voteService.getVoteResult();
+
+        model.addAttribute("voteResult", voteResult);
+
         return "match/match-lineup-result";
     }
 
