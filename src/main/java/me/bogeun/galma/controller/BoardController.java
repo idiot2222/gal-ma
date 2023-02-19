@@ -38,6 +38,7 @@ public class BoardController {
 
         model.addAttribute("boardTopic", BoardTopic.toEnumType(topic));
         model.addAttribute("posts", posts);
+        model.addAttribute("currentPageNumber", pageNumber);
         model.addAttribute("maxPageNumber", maxPageNumber);
 
         return "board/board-main";

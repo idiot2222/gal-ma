@@ -32,8 +32,9 @@
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
                         <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
+                            <a class="page-link" th:href="@{/board/{topic}/{pageNumber}(topic=${boardTopic}, pageNumber=${currentPageNumber} - 1)}" aria-label="Previous"
+                               th:classappend="${currentPageNumber == 1} ? disabled">
+                            <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
                         <li th:each="idx : ${#numbers.sequence(1, maxPageNumber)}" class="page-item"
@@ -41,7 +42,8 @@
                             <a class="page-link" th:href="@{/board/{topic}/{pageNumber}(topic=${boardTopic}, pageNumber=${idx})}" th:text="${idx}"></a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
+                            <a class="page-link" th:href="@{/board/{topic}/{pageNumber}(topic=${boardTopic}, pageNumber=${currentPageNumber} - 1)}" aria-label="Next"
+                                th:classappend="${currentPageNumber == maxPageNumber} ? disabled">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
