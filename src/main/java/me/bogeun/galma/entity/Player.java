@@ -1,6 +1,5 @@
 package me.bogeun.galma.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +7,6 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @MappedSuperclass
 public class Player {
 
@@ -26,4 +24,9 @@ public class Player {
     @Column(nullable = false, unique = true)
     private int backNumber;
 
+    public Player(String name, Handedness handedness, int backNumber) {
+        this.name = name;
+        this.handedness = handedness;
+        this.backNumber = backNumber;
+    }
 }

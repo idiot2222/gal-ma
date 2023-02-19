@@ -14,9 +14,8 @@ public class Pitcher extends Player {
     @Column(nullable = false)
     private int votes;
 
-    public Pitcher(Long id, String name, Handedness handedness, int backNumber, int votes) {
-        super(id, name, handedness, backNumber);
-        this.votes = votes;
+    public Pitcher(String name, Handedness handedness, int backNumber) {
+        super(name, handedness, backNumber);
     }
 
     public void vote() {

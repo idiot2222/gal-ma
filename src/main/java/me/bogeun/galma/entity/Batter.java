@@ -16,4 +16,8 @@ public class Batter extends Player {
     @ElementCollection
     private List<Position> positions = new ArrayList<>();
 
+    public Batter(String name, Handedness handedness, int backNumber, List<Position> positions) {
+        super(name, handedness, backNumber);
+        this.positions = positions;
+    }
 }
