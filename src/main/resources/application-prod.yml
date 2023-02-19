@@ -32,6 +32,9 @@ api:
   weather:
     uri: API_URL
     key: API_KEY
+  memcached:
+    host: memcached
+    port: 11211
 
 cache:
   weather:
