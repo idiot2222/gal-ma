@@ -1,6 +1,7 @@
 package me.bogeun.galma.controller;
 
 import me.bogeun.galma.entity.Account;
+import me.bogeun.galma.entity.UserRole;
 import me.bogeun.galma.payload.SignUpForm;
 import me.bogeun.galma.service.AccountService;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +42,7 @@ class AccountControllerTest {
         signUpForm.setPassword("password123");
         signUpForm.setEmail("user@email.com");
 
-        testAccount = accountService.signUp(signUpForm);
+        testAccount = accountService.signUp(signUpForm, UserRole.COMMON);
     }
 
 
