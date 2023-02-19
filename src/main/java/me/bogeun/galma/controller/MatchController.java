@@ -76,7 +76,7 @@ public class MatchController {
 
     @PostMapping("/lineup/vote")
     public String postLineUpVote(@RequestBody LineUpVoteForm voteForm) {
-        voteService.voteBatterAll(voteForm);
+        voteService.voteAll(voteForm);
 
         return "redirect:/match/lineup";
     }

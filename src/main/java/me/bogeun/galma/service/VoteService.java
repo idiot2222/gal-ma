@@ -25,7 +25,7 @@ public class VoteService {
     private final PitcherRepository pitcherRepository;
 
     @Transactional
-    public void voteBatterAll(LineUpVoteForm voteForm) {
+    public void voteAll(LineUpVoteForm voteForm) {
         List<Batter> batters = voteForm.getPlayers();
         Pitcher pitcher = voteForm.getPitcher();
         List<Position> positions = voteForm.getPositions();
@@ -43,7 +43,7 @@ public class VoteService {
     private void votePitcher(Pitcher pitcher) {
         pitcher.vote();
 
-        System.err.println(pitcher);
+        pitcherRepository.save(pitcher);
     }
 
     private void voteBatterByKey(Batter batter, String keyword) {
