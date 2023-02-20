@@ -56,4 +56,9 @@ public class Post {
     public void addViews(int views) {
         this.views += views;
     }
+
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

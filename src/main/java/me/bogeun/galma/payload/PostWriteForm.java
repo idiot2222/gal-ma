@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostCreateForm {
+public class PostWriteForm {
 
     @NotBlank(message = "제목을 입력해 주세요.")
     private String title;

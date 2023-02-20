@@ -6,17 +6,17 @@
 
 <div class="row justify-content-center mt-5">
     <div class="col-6">
-        <h1 class="display-6">글 작성</h1>
+        <h1 class="display-6">글 수정</h1>
         <hr/>
-        <form th:action="@{/board/{topic}/post/create(topic=${topic})}" method="post"
-              class="container" th:object="${postWriteForm}">
+        <form th:action="@{/board/post/update/{postId}(postId=${postId})}" method="post"
+              class="container" th:object="${postForm}">
             <div class="row justify-content-center fs-5 mt-5">
                 <div class="col-1">
                     <label class="form-label" style="min-width: 50px">제목 :</label>
                 </div>
                 <div class="col-7">
                     <input class="form-control" th:field="*{title}" type="text"
-                        placeholder="글 제목을 입력해주세요." required>
+                           placeholder="글 제목을 입력해주세요." required>
                     <small th:if="${param.error}" class="text-danger right">제목을 입력해주세요.</small>
                 </div>
                 <div class="col-2">

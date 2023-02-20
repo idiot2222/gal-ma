@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.bogeun.galma.entity.Account;
 import me.bogeun.galma.entity.BoardTopic;
 import me.bogeun.galma.entity.Post;
-import me.bogeun.galma.payload.PostCreateForm;
+import me.bogeun.galma.payload.PostWriteForm;
 import me.bogeun.galma.repository.PostRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,11 +29,11 @@ public class PostService {
     private final int PAGE_COUNT = 10;
 
 
-    public void createNewPost(Account account, String topic, PostCreateForm postCreateForm) {
+    public void createNewPost(Account account, String topic, PostWriteForm postWriteForm) {
         Post post = Post.builder()
                 .writer(account)
-                .title(postCreateForm.getTitle())
-                .content(postCreateForm.getContent())
+                .title(postWriteForm.getTitle())
+                .content(postWriteForm.getContent())
                 .boardTopic(BoardTopic.valueOf(topic.toUpperCase(Locale.ROOT)))
                 .wroteAt(LocalDateTime.now())
                 .build();
@@ -82,5 +82,13 @@ public class PostService {
 
                     return post;
                 });
+    }
+
+    public void updatePost(Long postId, PostWriteForm updateForm) {
+        Post post = getPostById(postId);
+
+        post.update(updateForm.getTitle(), updateForm.getContent());
+
+        postRepository.save(post);
     }
 }
