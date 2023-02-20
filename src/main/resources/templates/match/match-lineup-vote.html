@@ -262,7 +262,7 @@
                 "positions": positionSelectedList
             }),
             success: function (data) {
-                location.reload();
+                document.location.href = '/match/lineup';
             },
             error: function (xhr, status, error) {
                 console.error(error);
