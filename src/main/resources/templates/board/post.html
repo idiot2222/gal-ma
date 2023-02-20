@@ -86,9 +86,27 @@
     </div>
 </div>
 
-<script>
+<script th:inline="javascript">
     function postDelete() {
+        const postId = /*[[${postId}]]*/;
+        const boardTopic = /*[[${post.getBoardTopic()}]]*/;
+        const csrfToken = Cookies.get('XSRF-TOKEN');
 
+        if(confirm("이 게시글을 삭제합니다.") === true) {
+            $.ajax({
+                url: '/board/post/delete/' + postId + "/" + boardTopic,
+                type: "POST",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-XSRF-TOKEN', csrfToken);
+                },
+                success: function (data) {
+                    document.location.href = data;
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                },
+            })
+        }
     }
 </script>
 

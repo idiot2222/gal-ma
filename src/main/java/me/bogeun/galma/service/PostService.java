@@ -91,4 +91,10 @@ public class PostService {
 
         postRepository.save(post);
     }
+
+    public void deletePost(Long postId) {
+        Post post = getPostById(postId);
+
+        postRepository.delete(post);
+    }
 }

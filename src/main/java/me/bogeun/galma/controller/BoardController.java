@@ -126,4 +126,12 @@ public class BoardController {
         return uri.getPath();
     }
 
+    @ResponseBody
+    @PostMapping("/post/delete/{postId}/{boardTopic}")
+    public String deletePost(@PathVariable Long postId, @PathVariable String boardTopic) {
+        postService.deletePost(postId);
+
+        return "/board/" + boardTopic + "/1";
+    }
+
 }
