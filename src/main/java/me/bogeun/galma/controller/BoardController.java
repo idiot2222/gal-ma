@@ -53,9 +53,9 @@ public class BoardController {
     }
 
     @PostMapping("/{topic}/post/create")
-    public String createPost(@PathVariable String topic, @CurrentUser Account currentAccount,
+    public String createPost(@PathVariable String topic, @CurrentUser Account currentAccount, Model model,
                              @Valid @ModelAttribute PostCreateForm postCreateForm, Errors errors) {
-
+        model.addAttribute("boardTopic", BoardTopic.valueOf(topic));
         if(errors.hasErrors()) {
             return "board/post-create";
         }

@@ -16,7 +16,8 @@
                 </div>
                 <div class="col-7">
                     <input class="form-control" th:field="*{title}" type="text"
-                        placeholder="글 제목을 입력해주세요.">
+                        placeholder="글 제목을 입력해주세요." required>
+                    <small th:if="${param.error}" class="text-danger right">제목을 입력해주세요.</small>
                 </div>
                 <div class="col-2">
                     <input class="form-control text-center" th:value="${boardTopic.getKorean()}" disabled>
@@ -24,17 +25,26 @@
             </div>
             <div class="row justify-content-center mt-2">
                 <div class="col-10">
-                    <textarea class="form-control" style="resize: none" th:field="*{content}" rows="10"></textarea>
+                    <textarea class="form-control" style="resize: none" th:field="*{content}" rows="10" required></textarea>
+                    <small th:if="${param.error}" class="text-danger right">내용을 입력해주세요.</small>
                 </div>
             </div>
             <div class="mt-5 right">
                 <button type="submit" class="btn btn-outline-primary">
                     확인
                 </button>
+                <a class="btn btn-outline-danger" onclick="goBack()">
+                    취소
+                </a>
             </div>
         </form>
     </div>
 </div>
 
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
 </body>
 </html>
