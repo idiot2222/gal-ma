@@ -73,4 +73,10 @@ public class AccountService implements UserDetailsService {
         account.setPublicEmail(isPublicEmail);
         account.setPublicDescription(isPublicDescription);
     }
+
+    public void setProfileImage(Account account, String image) {
+        account.changeImage(image);
+
+        accountRepository.save(account);
+    }
 }

@@ -35,7 +35,7 @@ public class Account {
 
     private LocalDateTime nicknameChangedAt;
 
-    @Lob @Basic
+    @Lob @Basic(fetch = FetchType.LAZY)
     private String image;
 
     @Column(length = 100)
@@ -88,4 +88,7 @@ public class Account {
         return t.compareTo(LocalDateTime.now()) < 0;
     }
 
+    public void changeImage(String image) {
+        this.image = image;
+    }
 }

@@ -156,6 +156,19 @@ public class AccountController {
         return "redirect:/profile/" + username;
     }
 
+    @ResponseBody
+    @PostMapping("/profile/{username}/image")
+    public String setProfileImage(@PathVariable String username, @CurrentUser Account currentAccount,
+                                  @RequestBody String image) {
+        Account account = accountService.getAccountByUsername(username);
+        if (!account.equals(currentAccount)) {
+            throw new BadCredentialsException("have no access.");
+        }
+
+        accountService.setProfileImage(account, image);
+
+        return "success";
+    }
 
 
 
