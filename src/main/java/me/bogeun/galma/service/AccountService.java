@@ -36,6 +36,7 @@ public class AccountService implements UserDetailsService {
                 .isPublicDescription(true)
                 .isPublicEmail(true)
                 .userRole(role)
+                .image("/images/default-profile-image.jpg")
                 .build();
 
         return accountRepository.save(account);
