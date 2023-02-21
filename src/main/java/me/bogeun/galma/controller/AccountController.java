@@ -159,13 +159,13 @@ public class AccountController {
     @ResponseBody
     @PostMapping("/profile/{username}/image")
     public String setProfileImage(@PathVariable String username, @CurrentUser Account currentAccount,
-                                  @RequestBody String image) {
+                                  @RequestBody String dataUrl) {
         Account account = accountService.getAccountByUsername(username);
         if (!account.equals(currentAccount)) {
             throw new BadCredentialsException("have no access.");
         }
 
-        accountService.setProfileImage(account, image);
+        accountService.setProfileImage(account, dataUrl);
 
         return "success";
     }
