@@ -108,7 +108,7 @@ public class PostService {
         dto.setInfoList(postRepository.findAllTop3ByBoardTopicOrderByWroteAtDesc(BoardTopic.INFO));
         dto.setHumorList(postRepository.findAllTop3ByBoardTopicOrderByWroteAtDesc(BoardTopic.HUMOR));
         dto.setHorrorList(postRepository.findAllTop3ByBoardTopicOrderByWroteAtDesc(BoardTopic.HORROR));
-        dto.setTotalList(postRepository.findAllTop7ByWroteAtBetweenAndBoardTopicNotOrderByViews(start, end, BoardTopic.MATCH));
+        dto.setTotalList(postRepository.findAllTop7ByWroteAtBetweenAndBoardTopicNotOrderByViewsDesc(start, end, BoardTopic.MATCH));
 
         return dto;
     }

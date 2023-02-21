@@ -19,6 +19,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<Post> findAllTop3ByBoardTopicOrderByWroteAtDesc(BoardTopic boardTopic);
 
-    List<Post> findAllTop7ByWroteAtBetweenAndBoardTopicNotOrderByViews(LocalDateTime start, LocalDateTime end, BoardTopic boardTopic);
+    List<Post> findAllTop7ByWroteAtBetweenAndBoardTopicNotOrderByViewsDesc(LocalDateTime start, LocalDateTime end, BoardTopic boardTopic);
 
 }
