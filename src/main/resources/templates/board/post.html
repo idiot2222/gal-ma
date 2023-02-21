@@ -8,7 +8,8 @@
     <div class="col-7">
         <div class="mt-5">
             <span class="display-6" th:text="${post.title}"></span>
-            <span class="right" th:text="${post.boardTopic.getKorean() + ' 게시판'}"></span>
+            <a class="fw-semibold btn p-0 right" th:text="${post.boardTopic.getKorean() + ' 게시판'}"
+               th:href="@{/board/{boardTopic}/1(boardTopic=${#strings.toLowerCase(post.boardTopic)})}"></a>
         </div>
         <hr/>
         <div class="right">
