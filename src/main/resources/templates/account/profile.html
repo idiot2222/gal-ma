@@ -27,15 +27,15 @@
         <div class="col-2 text-center">
             <div th:if="${isOwner}">
                 <img th:if="${#strings.isEmpty(account.image)}" src="/images/default-profile-image.jpg"
-                     width="150" height="150" onclick="toggleOverlay()" class="pointer"/>
+                     width="150" height="150" onclick="toggleOverlay()" class="pointer radius"/>
                 <img th:unless="${#strings.isEmpty(account.image)}" th:src="${account.image}"
-                     width="150" height="150" onclick="toggleOverlay()" class="pointer"/>
+                     width="150" height="150" onclick="toggleOverlay()" class="pointer radius"/>
             </div>
             <div th:unless="${isOwner}">
                 <img th:if="${#strings.isEmpty(account.image)}" src="/images/default-profile-image.jpg"
-                     width="150" height="150"/>
+                     width="150" height="150" class="radius"/>
                 <img th:unless="${#strings.isEmpty(account.image)}" th:src="${account.image}"
-                     width="150" height="150"/>
+                     width="150" height="150" class="radius"/>
             </div>
         </div>
     </div>
