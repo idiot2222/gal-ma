@@ -4,8 +4,69 @@
 <body>
 <nav th:replace="fragments :: navbar"></nav>
 
-<div class="container">
-
+<div class="row justify-content-center mt-5">
+    <div class="col-6">
+        <div class="row justify-content-center">
+            <div class="col-5 mx-2">
+                <div class="list-group">
+                    <a href="board/baseball/1" class="list-group-item list-group-item-action list-group-item-dark">야구 게시판</a>
+                    <div th:each="num : ${#numbers.sequence(0, 2)}" th:with="list=${lists.baseballList}">
+                        <a th:if="${list.size() > num}" class="list-group-item list-group-item-action"
+                           th:href="@{/board/post/{postId}(postId=${list.get(num).id})}" th:text="${list.get(num).title}"></a>
+                        <div th:unless="${list.size() > num}" class="list-group-item">
+                            -
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-5 mx-2">
+                <div class="list-group">
+                    <a href="board/info/1" class="list-group-item list-group-item-action list-group-item-dark">정보 게시판</a>
+                    <div th:each="num : ${#numbers.sequence(0, 2)}" th:with="list=${lists.infoList}">
+                        <a th:if="${list.size() > num}" class="list-group-item list-group-item-action"
+                           th:href="@{/board/post/{postId}(postId=${list.get(num).id})}" th:text="${list.get(num).title}"></a>
+                        <div th:unless="${list.size() > num}" class="list-group-item">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-2">
+            <div class="col-5 mx-2">
+                <div class="list-group">
+                    <a href="board/humor/1" class="list-group-item list-group-item-action list-group-item-dark">유머 게시판</a>
+                    <div th:each="num : ${#numbers.sequence(0, 2)}" th:with="list=${lists.humorList}">
+                        <a th:if="${list.size() > num}" class="list-group-item list-group-item-action"
+                           th:href="@{/board/post/{postId}(postId=${list.get(num).id})}" th:text="${list.get(num).title}"></a>
+                        <div th:unless="${list.size() > num}" class="list-group-item">-</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-5 mx-2">
+                <div class="list-group">
+                    <a href="board/horror/1" class="list-group-item list-group-item-action list-group-item-dark">공포 게시판</a>
+                    <div th:each="num : ${#numbers.sequence(0, 2)}" th:with="list=${lists.horrorList}">
+                        <a th:if="${list.size() > num}" class="list-group-item list-group-item-action"
+                           th:href="@{/board/post/{postId}(postId=${list.get(num).id})}" th:text="${list.get(num).title}"></a>
+                        <div th:unless="${list.size() > num}" class="list-group-item">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-5">
+        <div class="mx-2">
+            <div class="list-group">
+                <div class="list-group-item list-group-item-dark">오늘의 인기 게시글</div>
+                <div th:each="num : ${#numbers.sequence(0,6)}" th:with="list=${lists.totalList}">
+                    <a th:if="${list.size() > num}" th:with="post=${list.get(num)}" th:href="@{/board/post/{postId}(postId=${post.id})}" class="list-group-item list-group-item-action">
+                        <span th:text="'[' + ${post.boardTopic.getKorean()} + '] ' + ${post.title}" class="text-truncate"></span>
+                        <small th:text="${post.views} + ' views'" class="right"></small>
+                    </a>
+                    <div th:unless="${list.size() > num}" class="list-group-item">-</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>

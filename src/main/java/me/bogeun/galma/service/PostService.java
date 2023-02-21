@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.bogeun.galma.entity.Account;
 import me.bogeun.galma.entity.BoardTopic;
 import me.bogeun.galma.entity.Post;
+import me.bogeun.galma.payload.HomePostListDto;
 import me.bogeun.galma.payload.PostWriteForm;
 import me.bogeun.galma.repository.PostRepository;
 import org.springframework.data.domain.PageRequest;
@@ -96,5 +97,19 @@ public class PostService {
         Post post = getPostById(postId);
 
         postRepository.delete(post);
+    }
+
+    public HomePostListDto getHomePostList() {
+        HomePostListDto dto = new HomePostListDto();
+        LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+
+        dto.setBaseballList(postRepository.findAllTop3ByBoardTopicOrderByWroteAtDesc(BoardTopic.BASEBALL));
+        dto.setInfoList(postRepository.findAllTop3ByBoardTopicOrderByWroteAtDesc(BoardTopic.INFO));
+        dto.setHumorList(postRepository.findAllTop3ByBoardTopicOrderByWroteAtDesc(BoardTopic.HUMOR));
+        dto.setHorrorList(postRepository.findAllTop3ByBoardTopicOrderByWroteAtDesc(BoardTopic.HORROR));
+        dto.setTotalList(postRepository.findAllTop7ByWroteAtBetweenAndBoardTopicNotOrderByViews(start, end, BoardTopic.MATCH));
+
+        return dto;
     }
 }
