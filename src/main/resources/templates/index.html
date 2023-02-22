@@ -52,17 +52,46 @@
                 </div>
             </div>
         </div>
+        <div class="row justify-content-center">
+            <div class="col-10 my-3">
+                <div class="list-group">
+                    <div class="list-group-item list-group-item-dark">오늘의 인기 게시글</div>
+                    <div th:each="num : ${#numbers.sequence(0,6)}" th:with="list=${lists.totalList}">
+                        <a th:if="${list.size() > num}" th:with="post=${list.get(num)}" th:href="@{/board/post/{postId}(postId=${post.id})}" class="list-group-item list-group-item-action py-1">
+                            <span th:text="'[' + ${post.boardTopic.getKorean()} + '] ' + ${post.title}" class="text-truncate"></span>
+                            <small th:text="${post.views} + ' views'" class="right"></small>
+                        </a>
+                        <div th:unless="${list.size() > num}" class="list-group-item py-1">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-5">
-        <div class="mx-2">
-            <div class="list-group">
-                <div class="list-group-item list-group-item-dark">오늘의 인기 게시글</div>
-                <div th:each="num : ${#numbers.sequence(0,6)}" th:with="list=${lists.totalList}">
-                    <a th:if="${list.size() > num}" th:with="post=${list.get(num)}" th:href="@{/board/post/{postId}(postId=${post.id})}" class="list-group-item list-group-item-action py-1">
-                        <span th:text="'[' + ${post.boardTopic.getKorean()} + '] ' + ${post.title}" class="text-truncate"></span>
-                        <small th:text="${post.views} + ' views'" class="right"></small>
-                    </a>
-                    <div th:unless="${list.size() > num}" class="list-group-item py-1">-</div>
+    <div class="col-4">
+        <div class="bg-light radius px-3 py-2 mt-4">
+            <span class="fs-5">오늘의 경기</span>
+            <div th:if="${match.id != null}">
+                <div class="row justify-content-center my-3">
+                    <div class="col-5">
+                        <img src="/images/logos/LOT.jpg" alt="우리팀" class="team-logo"/>
+                        <h1 th:if="${match.matchStadium.name() == 'SJ'}" class="fs-6 text-center">HOME</h1>
+                        <h1 th:unless="${match.matchStadium.name() == 'SJ'}" class="fs-6 text-center">AWAY</h1>
+                        <div class="fs-6 text-center text-success">롯데 자이언츠</div>
+                    </div>
+                    <div class="col-1 my-auto">
+                        VS
+                    </div>
+                    <div class="col-5">
+                        <img th:src="@{/images/logos/{team}.jpg(team=${match.opposingTeam})}" alt="상대팀" class="team-logo"/>
+                        <h1 th:unless="${match.matchStadium.name() == 'SJ'}" class="fs-6 text-center">HOME</h1>
+                        <h1 th:if="${match.matchStadium.name() == 'SJ'}" class="fs-6 text-center">AWAY</h1>
+                        <div class="fs-6 text-center" th:text="${match.opposingTeam.getFullName()}"></div>
+                    </div>
+                </div>
+            </div>
+            <div th:unless="${match.id != null}">
+                <div class="text-center fs-4 py-5">
+                    오늘 경기 없음
                 </div>
             </div>
         </div>
