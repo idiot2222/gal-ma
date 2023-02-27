@@ -29,8 +29,7 @@
         </div>
         <br/><br/><br/>
         <div class="container my-5">
-            <p class="lead" th:text="${post.content}"></p>
-
+            <p id="post-content" class="lead"></p>
         </div>
         <div class="right" th:if="${isOwner}">
             <a th:href="@{/board/post/update/{postId}(postId=${post.id})}" class="btn btn-outline-success btn-sm">수정</a>
@@ -90,6 +89,15 @@
 </div>
 
 <script th:inline="javascript">
+    const postContent = document.querySelector('#post-content');
+
+    formatTaggedText(postContent);
+
+    const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    const popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+    })
+
     function postDelete() {
         const postId = /*[[${postId}]]*/;
         const boardTopic = /*[[${post.getBoardTopic()}]]*/;
@@ -111,7 +119,31 @@
             })
         }
     }
+
+    function formatTaggedText(p) {
+        const content = /*[[${taggedContent.content}]]*/;
+        const playerList = /*[[${taggedContent.playerList}]]*/;
+
+
+        const pattern = /\[[0-9]\]+/g;
+        const replacedContent = content.replaceAll(pattern, (match) => {
+            const index = Number(match.substring(1, match.length - 1));
+            const player = playerList[index];
+
+            return `<span class="highlight" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="babo">${player.name}</span>`;
+        });
+
+        p.innerHTML = replacedContent;
+    }
 </script>
 
 </body>
 </html>
+
+<style>
+    .highlight {
+        background-color: darkslategrey;
+        color: white;
+        cursor: pointer;
+    }
+</style>

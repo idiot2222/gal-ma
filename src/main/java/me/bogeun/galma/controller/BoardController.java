@@ -1,12 +1,11 @@
 package me.bogeun.galma.controller;
 
 import lombok.RequiredArgsConstructor;
-import me.bogeun.galma.entity.Account;
-import me.bogeun.galma.entity.BoardTopic;
-import me.bogeun.galma.entity.Post;
-import me.bogeun.galma.entity.Reply;
+import me.bogeun.galma.entity.*;
 import me.bogeun.galma.mapper.PostMapper;
 import me.bogeun.galma.payload.PostWriteForm;
+import me.bogeun.galma.payload.TaggedStringDto;
+import me.bogeun.galma.service.PlayerService;
 import me.bogeun.galma.service.PostService;
 import me.bogeun.galma.service.ReplyService;
 import me.bogeun.galma.utils.CurrentUser;
@@ -30,6 +29,7 @@ public class BoardController {
 
     private final PostService postService;
     private final ReplyService replyService;
+    private final PlayerService playerService;
 
     private final PostMapper postMapper;
 
@@ -75,6 +75,7 @@ public class BoardController {
                           @PathVariable Long postId, Model model,
                           @RequestParam(defaultValue = "1") int replyPage) {
         Post post = postService.getPostById(postId);
+        TaggedStringDto taggedContent = postService.convertTaggedString(post.getContent());
         Account writer = post.getWriter();
         List<Reply> replies = replyService.getRepliesByPost(post, replyPage);
         int maxReplyPageNumber = replyService.getMaxReplyPageNumber(post);
@@ -87,6 +88,7 @@ public class BoardController {
         model.addAttribute("replies", replies);
         model.addAttribute("maxReplyPageNumber", maxReplyPageNumber);
         model.addAttribute("isOwner", Objects.equals(currentAccount.getId(), writer.getId()));
+        model.addAttribute("taggedContent", taggedContent);
 
         return "board/post";
     }

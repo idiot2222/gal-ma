@@ -3,9 +3,11 @@ package me.bogeun.galma.service;
 import lombok.RequiredArgsConstructor;
 import me.bogeun.galma.entity.Account;
 import me.bogeun.galma.entity.BoardTopic;
+import me.bogeun.galma.entity.Player;
 import me.bogeun.galma.entity.Post;
 import me.bogeun.galma.payload.HomePostListDto;
 import me.bogeun.galma.payload.PostWriteForm;
+import me.bogeun.galma.payload.TaggedStringDto;
 import me.bogeun.galma.repository.PostRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,8 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 @Transactional
@@ -26,6 +31,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final AccountService accountService;
+    private final PlayerService playerService;
 
     private final int PAGE_COUNT = 10;
 
@@ -111,5 +117,42 @@ public class PostService {
         dto.setTotalList(postRepository.findAllTop7ByWroteAtBetweenAndBoardTopicNotOrderByViewsDesc(start, end, BoardTopic.MATCH));
 
         return dto;
+    }
+
+    public TaggedStringDto convertTaggedString(String string) {
+        StringBuilder sb = new StringBuilder();
+        List<Player> playerNameList = getPlayerNameList(string, sb);
+
+        return new TaggedStringDto(sb.toString(), playerNameList);
+    }
+
+    private List<Player> getPlayerNameList(String s, StringBuilder sb) {
+        Pattern pattern = Pattern.compile("\\[[가-힣]{1,5}\\]");
+        Matcher matcher = pattern.matcher(s);
+        List<Player> playerNameList = new ArrayList<>();
+        int idx = 0;
+
+        while(matcher.find()) {
+            String group = matcher.group();
+            String playerName = convertToPlayerName(group);
+            Player player = playerService.getPlayerByName(playerName);
+
+            if (player == null) {
+                continue;
+            }
+
+            playerNameList.add(player);
+            s = s.replaceAll("\\[" + playerName + "\\]", "[" + idx + "]");
+
+            matcher = pattern.matcher(s);
+            idx++;
+        }
+
+        sb.append(s);
+        return playerNameList;
+    }
+
+    private String convertToPlayerName(String group) {
+        return group.substring(1, group.length() - 1);
     }
 }
