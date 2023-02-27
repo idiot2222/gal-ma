@@ -29,7 +29,7 @@
         </div>
         <br/><br/><br/>
         <div class="container my-5">
-            <p id="post-content" class="lead"></p>
+            <pre id="post-content" class="lead"></pre>
         </div>
         <div class="right" th:if="${isOwner}">
             <a th:href="@{/board/post/update/{postId}(postId=${post.id})}" class="btn btn-outline-success btn-sm">수정</a>
@@ -123,14 +123,15 @@
     function formatTaggedText(p) {
         const content = /*[[${taggedContent.content}]]*/;
         const playerList = /*[[${taggedContent.playerList}]]*/;
-
+        const statList = /*[[${taggedContent.formatStatList}]]*/;
 
         const pattern = /\[[0-9]\]+/g;
         const replacedContent = content.replaceAll(pattern, (match) => {
-            const index = Number(match.substring(1, match.length - 1));
-            const player = playerList[index];
+            const idx = Number(match.substring(1, match.length - 1));
+            const player = playerList[idx];
+            const stat = statList[idx];
 
-            return `<span class="highlight" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="babo">${player.name}</span>`;
+            return `<span class="highlight" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-content="${stat ?? 'no data'}">${player.name}</span>`;
         });
 
         p.innerHTML = replacedContent;

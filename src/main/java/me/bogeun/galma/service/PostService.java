@@ -1,10 +1,7 @@
 package me.bogeun.galma.service;
 
 import lombok.RequiredArgsConstructor;
-import me.bogeun.galma.entity.Account;
-import me.bogeun.galma.entity.BoardTopic;
-import me.bogeun.galma.entity.Player;
-import me.bogeun.galma.entity.Post;
+import me.bogeun.galma.entity.*;
 import me.bogeun.galma.payload.HomePostListDto;
 import me.bogeun.galma.payload.PostWriteForm;
 import me.bogeun.galma.payload.TaggedStringDto;
@@ -121,12 +118,13 @@ public class PostService {
 
     public TaggedStringDto convertTaggedString(String string) {
         StringBuilder sb = new StringBuilder();
-        List<Player> playerNameList = getPlayerNameList(string, sb);
+        List<String> statList = new ArrayList<>();
+        List<Player> playerNameList = getPlayerNameList(string, sb, statList);
 
-        return new TaggedStringDto(sb.toString(), playerNameList);
+        return new TaggedStringDto(sb.toString(), playerNameList, statList);
     }
 
-    private List<Player> getPlayerNameList(String s, StringBuilder sb) {
+    private List<Player> getPlayerNameList(String s, StringBuilder sb, List<String> statList) {
         Pattern pattern = Pattern.compile("\\[[가-힣]{1,5}\\]");
         Matcher matcher = pattern.matcher(s);
         List<Player> playerNameList = new ArrayList<>();
@@ -136,11 +134,12 @@ public class PostService {
             String group = matcher.group();
             String playerName = convertToPlayerName(group);
             Player player = playerService.getPlayerByName(playerName);
-
             if (player == null) {
                 continue;
             }
 
+            String statString = getStat(22, player) == null ? null : getStat(22, player).getFormatStat(); // TODO 일단 22시즌으로 불러오도록 설정함.
+            statList.add(statString);
             playerNameList.add(player);
             s = s.replaceAll("\\[" + playerName + "\\]", "[" + idx + "]");
 
@@ -150,6 +149,17 @@ public class PostService {
 
         sb.append(s);
         return playerNameList;
+    }
+
+    private PlayerStat getStat(int year, Player player) {
+        if (player.getClass().isAssignableFrom(Pitcher.class)) {
+            return playerService.getPitcherStat(year, (Pitcher) player);
+        }
+        if(player.getClass().isAssignableFrom(Batter.class)) {
+            return playerService.getBatterStat(year, (Batter) player);
+        }
+
+        return null;
     }
 
     private String convertToPlayerName(String group) {
