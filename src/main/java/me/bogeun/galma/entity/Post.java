@@ -41,7 +41,7 @@ public class Post {
     @OneToOne
     private Account writer;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
     private List<Reply> replies;
 
     @Builder
