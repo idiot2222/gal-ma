@@ -73,7 +73,7 @@
             <div th:if="${match.id != null}">
                 <div class="row justify-content-center my-3">
                     <div class="col-5">
-                        <img src="/images/logos/LOT.jpg" alt="우리팀" class="team-logo"/>
+                        <img src="/images/logos/LOT.jpg" alt="우리팀" class="team-logo" width="150"/>
                         <h1 th:if="${match.matchStadium.name() == 'SJ'}" class="fs-6 text-center">HOME</h1>
                         <h1 th:unless="${match.matchStadium.name() == 'SJ'}" class="fs-6 text-center">AWAY</h1>
                         <div class="fs-6 text-center text-success">롯데 자이언츠</div>
@@ -82,7 +82,7 @@
                         VS
                     </div>
                     <div class="col-5">
-                        <img th:src="@{/images/logos/{team}.jpg(team=${match.opposingTeam})}" alt="상대팀" class="team-logo"/>
+                        <img th:src="@{/images/logos/{team}.jpg(team=${match.opposingTeam})}" alt="상대팀" class="team-logo" width="150"/>
                         <h1 th:unless="${match.matchStadium.name() == 'SJ'}" class="fs-6 text-center">HOME</h1>
                         <h1 th:if="${match.matchStadium.name() == 'SJ'}" class="fs-6 text-center">AWAY</h1>
                         <div class="fs-6 text-center" th:text="${match.opposingTeam.getFullName()}"></div>
